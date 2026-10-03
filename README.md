@@ -1,0 +1,1 @@
+# friday-code-standards
