@@ -16,6 +16,11 @@ describe("prettier-config-friday", () => {
     });
 
     expect(config.plugins).toHaveLength(1);
+
+    const serializedPlugins = JSON.stringify(config.plugins);
+
+    expect(serializedPlugins).toContain('"languages":[');
+    expect(serializedPlugins).toContain('"name":"husky"');
   });
 
   it("normalizes JavaScript and line endings", async () => {

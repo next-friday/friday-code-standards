@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import {describe, expect, it} from "vitest";
 import path from "node:path";
 
@@ -38,7 +39,8 @@ describe("React name replacements", () => {
       },
     );
 
-    expect(result?.messages.map(message => message.ruleId)).not.toContain(RULE_ID);
+    assert.ok(result);
+    expect(result.messages.map(message => message.ruleId)).not.toContain(RULE_ID);
   });
 
   it("keeps non-React replacements enabled in TSX", async () => {

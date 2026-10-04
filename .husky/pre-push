@@ -40,7 +40,7 @@ while IFS=' ' read -r local_ref local_oid remote_ref remote_oid || [ -n "${local
 
   gitleaks git --redact --log-opts="$log_opts" .
 
-  if git log -m --format= --name-only $log_opts -- \
+  changed_files=$(git log -m --format= --name-only $log_opts -- \
     . \
     ':(exclude,glob)**/*.md' \
     ':(exclude)LICENSE' \
@@ -59,8 +59,9 @@ while IFS=' ' read -r local_ref local_oid remote_ref remote_oid || [ -n "${local
     ':(exclude,glob)**/*.svg' \
     ':(exclude,glob)**/*.jpg' \
     ':(exclude).gitignore' \
-    ':(exclude).gitattributes' \
-    | grep -q .; then
+    ':(exclude).gitattributes')
+
+  if printf '%s\n' "$changed_files" | grep -q .; then
     has_heavy=1
   fi
 done

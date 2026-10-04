@@ -56,7 +56,6 @@ export const typeChecked: Linter.Config[] = [
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: process.cwd(),
       },
     },
     rules: typeCheckedRules,

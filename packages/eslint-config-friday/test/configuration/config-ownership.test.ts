@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import {describe, expect, it} from "vitest";
 import path from "node:path";
 
@@ -24,7 +25,9 @@ describe("runtime globals", () => {
       },
     );
 
-    expect(bufferResult?.messages.map(message => message.ruleId)).not.toContain("no-undef");
-    expect(documentResult?.messages.map(message => message.ruleId)).not.toContain("no-undef");
+    assert.ok(bufferResult);
+    assert.ok(documentResult);
+    expect(bufferResult.messages.map(message => message.ruleId)).not.toContain("no-undef");
+    expect(documentResult.messages.map(message => message.ruleId)).not.toContain("no-undef");
   });
 });

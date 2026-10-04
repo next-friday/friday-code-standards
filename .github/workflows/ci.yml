@@ -37,6 +37,18 @@ jobs:
         with:
           predicate-quantifier: some-with-excludes
           filters: .github/file-filters.yml
+      - name: Detect non-release-metadata changes
+        id: release-metadata
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        with:
+          predicate-quantifier: some-with-excludes
+          filters: |
+            non_release_metadata:
+              - "**"
+              - "!.changeset/**"
+              - "!packages/*/package.json"
+              - "!packages/*/CHANGELOG.md"
+              - "!pnpm-lock.yaml"
       - name: Select verification mode
         id: mode
         shell: bash
@@ -46,6 +58,7 @@ jobs:
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
           HEAVY: ${{ steps.filter.outputs.heavy }}
           CI_POLICY: ${{ steps.filter.outputs.ci_policy }}
+          NON_RELEASE_METADATA: ${{ steps.release-metadata.outputs.non_release_metadata }}
         run: |
           release_pr=false
           if [[ "$EVENT_NAME" == "pull_request" && "$HEAD_REF" == "changeset-release/main" && "$PR_AUTHOR" == "github-actions[bot]" ]]; then
@@ -53,7 +66,7 @@ jobs:
           fi
 
           full_verification=false
-          if [[ "$EVENT_NAME" == "push" || ( "$EVENT_NAME" == "pull_request" && "$release_pr" != "true" && ( "$HEAVY" == "true" || "$CI_POLICY" == "true" ) ) ]]; then
+          if [[ "$EVENT_NAME" == "push" || ( "$EVENT_NAME" == "pull_request" && ( ( "$release_pr" == "true" && "$NON_RELEASE_METADATA" == "true" ) || ( "$release_pr" != "true" && ( "$HEAVY" == "true" || "$CI_POLICY" == "true" ) ) ) ) ]]; then
             full_verification=true
           fi
 
@@ -246,14 +259,17 @@ jobs:
             overrideConfigFile: true,
             overrideConfig: friday(),
           });
-          const [lintResult] = await eslint.lintText("", {filePath: "fixture.js"});
+          const [lintResult] = await eslint.lintText("export const value = 1;\n", {
+            filePath: "fixture.js",
+          });
           assert(lintResult);
+          assert.equal(lintResult.errorCount, 0);
 
           const formatted = await prettier.format("const value={a:1}\n", {
             ...prettierConfig,
             parser: "babel",
           });
-          assert(formatted.length > 0);
+          assert.equal(formatted, "const value = {a: 1};\n");
 
           const shellFormatted = await prettier.format(
             '#!/usr/bin/env sh\nif [ "$value" = "1" ]; then\n\techo yes\nfi\n',
@@ -384,8 +400,11 @@ jobs:
             overrideConfigFile: true,
             overrideConfig: friday(),
           });
-          const [result] = await eslint.lintText("", {filePath: "fixture.js"});
+          const [result] = await eslint.lintText("export const value = 1;\n", {
+            filePath: "fixture.js",
+          });
           assert(result);
+          assert.equal(result.errorCount, 0);
           NODE
               ;;
             prettier)
