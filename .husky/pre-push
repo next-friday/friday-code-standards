@@ -58,8 +58,7 @@ while IFS=' ' read -r local_ref local_oid remote_ref remote_oid || [ -n "${local
     ':(exclude,glob)**/*.png' \
     ':(exclude,glob)**/*.svg' \
     ':(exclude,glob)**/*.jpg' \
-    ':(exclude).gitignore' \
-    ':(exclude).gitattributes')
+    ':(exclude).gitignore')
 
   if printf '%s\n' "$changed_files" | grep -q .; then
     has_heavy=1
