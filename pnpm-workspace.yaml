@@ -7,6 +7,12 @@ overrides:
   "@humanfs/node@<0.16.8": ^0.16.8
   flatted@<=3.4.1: ^3.4.2
   nanoid@<3.3.18: ^3.3.18
+audit:
+  ignore:
+    # Temporary transitive advisory with no patched release.
+    # Path: @next/eslint-plugin-next > fast-glob > micromatch > braces.
+    # Remove as soon as braces publishes a version that fixes GHSA-vfj7-8cjw-p6xm.
+    - GHSA-vfj7-8cjw-p6xm
 minimumReleaseAgeExclude:
   - "@next-friday/eslint-plugin-friday@1.0.0"
   - "@eslint-react/ast@5.23.3"
