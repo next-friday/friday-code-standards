@@ -1,0 +1,18 @@
+{
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "access": "public",
+  "baseBranch": "main",
+  "fixed": [
+    [
+      "@next-friday/commitlint-config-friday",
+      "@next-friday/eslint-config-friday",
+      "@next-friday/prettier-config-friday"
+    ]
+  ],
+  "updateInternalDependencies": "patch",
+  "privatePackages": {
+    "version": false,
+    "tag": false
+  }
+}

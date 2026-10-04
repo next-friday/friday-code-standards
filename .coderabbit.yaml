@@ -1,0 +1,42 @@
+language: "en-US"
+early_access: false
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  collapse_walkthrough: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "packages/*/src/**"
+    - "packages/*/test/**"
+    - "packages/eslint-config-friday/fixtures/**"
+    - ".github/workflows/**"
+    - ".github/actions/**"
+    - ".husky/**"
+    - ".changeset/config.json"
+  path_instructions:
+    - path: "packages/*/src/**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}"
+      instructions: |
+        Review behavior, public-contract impact, error handling, and unsafe bypasses. Report a changed bypass only when it hides an active diagnostic or widens an exception: @ts-ignore, @ts-expect-error without a specific explanation, unsafe casts such as as any, or undocumented or broad eslint-disable directives.
+    - path: "packages/*/test/**"
+      instructions: |
+        Review whether tests prove observable behavior and regressions rather than implementation details. Flag weakened assertions, false-positive tests, missing representative cases, and tests that no longer protect changed behavior.
+    - path: "packages/eslint-config-friday/fixtures/**"
+      instructions: |
+        Treat fixtures as executable test inputs. Flag fixture changes that accidentally weaken, broaden, or invalidate the behavior the related tests are intended to exercise.
+    - path: ".github/{workflows,actions}/**"
+      instructions: |
+        Review triggers, permissions, secret and token handling, action pinning, release safety, shell correctness, and whether workflow conditions can skip or weaken required verification.
+    - path: ".husky/**"
+      instructions: |
+        Review hook logic for correctness, quoting, failure behavior, pushed-ref handling, and any path selection that could bypass required verification or secret scanning.
+    - path: ".changeset/config.json"
+      instructions: |
+        Review release semantics, package grouping, access, versioning, and internal-dependency behavior for unintended publishing or versioning changes.
+knowledge_base:
+  code_guidelines:
+    enabled: false

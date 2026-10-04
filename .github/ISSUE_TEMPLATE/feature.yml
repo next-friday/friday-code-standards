@@ -1,0 +1,60 @@
+name: Feature request
+description: Suggest a specific change to the Next Friday code standards packages.
+labels: ["enhancement"]
+assignees:
+  - joetakara
+  - next-friday-engineer
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for changes that are ready to evaluate.
+        For questions or early ideas, use GitHub Discussions.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Affected area
+      description: Select the area this request affects.
+      options:
+        - Core / Engine Policy
+        - TypeScript (typescript-eslint)
+        - Node.js (eslint-plugin-n)
+        - Browser / Globals
+        - Tests (@vitest/eslint-plugin)
+        - Formatting / Style (@stylistic)
+        - Prettier Configuration
+        - Commitlint Policy
+        - Imports & Ordering (import-x / perfectionist)
+        - Code Quality & Security (sonarjs / unicorn)
+        - Data & Manifests (jsonc / package-json)
+        - Documentation / Repository Governance
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the problem or use case. Include false positives or false negatives when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest change that solves the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: List maintained upstream rules or other existing options you considered.
+    validations:
+      required: false
+  - type: checkboxes
+    id: breaking
+    attributes:
+      label: Breaking change
+      description: Indicate whether this request changes behavior for existing consumers.
+      options:
+        - label: This request adds a rule, increases severity, or otherwise changes an existing consumer contract.

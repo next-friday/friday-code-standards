@@ -1,0 +1,53 @@
+changes:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**"
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/**"
+          - ".github/actions/**"
+          - ".github/file-filters.yml"
+          - ".github/dependabot.yml"
+
+release:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".changeset/**"
+          - ".github/workflows/release.yml"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "package.json"
+          - "packages/*/package.json"
+          - "pnpm-lock.yaml"
+          - "pnpm-workspace.yaml"
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/*/test/**"
+          - "packages/*/fixtures/**"
+          - "packages/*/vitest.config.ts"
+
+eslint-config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/eslint-config-friday/**"
+
+prettier-config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/prettier-config-friday/**"
+
+commitlint-config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/commitlint-config-friday/**"

@@ -1,0 +1,70 @@
+{
+  "name": "friday-code-standards",
+  "private": true,
+  "description": "Monorepo for Next Friday's shared engineering standards and config packages.",
+  "type": "module",
+  "scripts": {
+    "audit": "turbo run audit",
+    "build": "turbo run build",
+    "changeset": "changeset",
+    "changeset:status": "changeset status --since main",
+    "check:attw": "pnpm --filter './packages/*' exec attw --pack . --profile esm-only --ignore-rules cjs-resolves-to-esm --no-summary",
+    "check:publint": "pnpm --filter './packages/*' exec publint",
+    "clean": "turbo run clean && rm -rf .turbo node_modules/.cache",
+    "clean:dist": "turbo run clean:dist",
+    "clean:test": "turbo run clean:test",
+    "depcruise": "depcruise --config .dependency-cruiser.ts packages",
+    "dev": "turbo run dev",
+    "fix": "pnpm lint && pnpm format",
+    "format": "pnpm --filter @next-friday/prettier-config-friday build && prettier --write --cache .",
+    "format:check": "pnpm --filter @next-friday/prettier-config-friday build && prettier --check --cache . && editorconfig-checker",
+    "inspect": "pnpm build && eslint-config-inspector",
+    "knip": "knip",
+    "lint": "pnpm lint:root && turbo run lint",
+    "lint:check": "pnpm lint:root:check && turbo run lint:check",
+    "lint:root": "pnpm --filter @next-friday/eslint-config-friday build && eslint eslint.config.ts .dependency-cruiser.ts --fix --cache --max-warnings=0",
+    "lint:root:check": "pnpm --filter @next-friday/eslint-config-friday build && eslint eslint.config.ts .dependency-cruiser.ts --cache --max-warnings=0",
+    "peers:check": "pnpm peers check",
+    "prepare": "husky",
+    "sort-package-json": "sort-package-json package.json packages/*/package.json",
+    "sort-package-json:check": "sort-package-json --check package.json packages/*/package.json",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage --concurrency=1",
+    "test:watch": "turbo run test:watch",
+    "typecheck": "pnpm typecheck:root && turbo run typecheck",
+    "typecheck:root": "pnpm --filter @next-friday/eslint-config-friday build && tsc --noEmit -p tsconfig.json",
+    "verify": "pnpm lint:check && pnpm format:check && pnpm sort-package-json:check && pnpm peers:check && pnpm typecheck && pnpm test:coverage && pnpm knip && pnpm depcruise && pnpm build && pnpm check:publint && pnpm check:attw"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@changesets/cli": "3.0.3",
+    "@commitlint/cli": "21.2.3",
+    "@eslint/config-inspector": "3.5.0",
+    "@next-friday/commitlint-config-friday": "workspace:*",
+    "@next-friday/eslint-config-friday": "workspace:*",
+    "@next-friday/prettier-config-friday": "workspace:*",
+    "dependency-cruiser": "18.5.0",
+    "editorconfig-checker": "7.0.0",
+    "eslint": "10.11.0",
+    "husky": "9.1.7",
+    "knip": "6.39.0",
+    "lint-staged": "17.6.0",
+    "pkg-pr-new": "0.0.88",
+    "prettier": "3.9.9",
+    "publint": "0.3.24",
+    "sort-package-json": "4.0.0",
+    "turbo": "2.11.6",
+    "typescript": "6.0.3"
+  },
+  "packageManager": "pnpm@12.6.0+sha512.3ef68f951cb111ac204b4a5a16f0b2ddf0da56a96e0413e81d855d9f0b55ef926714709028e1cd00c405c2c5fb7b9e8ec4dc46777c805d0373c2f2ff00fd20ec",
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.20.0",
+      "onFail": "download"
+    }
+  }
+}

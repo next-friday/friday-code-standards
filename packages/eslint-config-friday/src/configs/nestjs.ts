@@ -1,0 +1,68 @@
+import {plugin as nestjsPlugin} from "@darraghor/eslint-plugin-nestjs-typed";
+import type {ESLint, Linter} from "eslint";
+
+import {TYPESCRIPT_FILES} from "../globs";
+
+const nestjsPluginForConfig: ESLint.Plugin = {
+  meta: nestjsPlugin.meta,
+  rules: nestjsPlugin.rules as unknown as ESLint.Plugin["rules"],
+};
+
+const nestjsRules = {
+  "@darraghor/nestjs-typed/all-properties-are-whitelisted": "error",
+  "@darraghor/nestjs-typed/all-properties-have-explicit-defined": "error",
+  "@darraghor/nestjs-typed/api-enum-property-best-practices": "error",
+  "@darraghor/nestjs-typed/api-method-should-specify-api-operation": "off",
+  "@darraghor/nestjs-typed/api-method-should-specify-api-response": "error",
+  "@darraghor/nestjs-typed/api-methods-should-be-guarded": "off",
+  "@darraghor/nestjs-typed/api-operation-summary-description-capitalized": "error",
+  "@darraghor/nestjs-typed/api-property-matches-property-optionality": "error",
+  "@darraghor/nestjs-typed/api-property-returning-array-should-set-array": "error",
+  "@darraghor/nestjs-typed/api-property-should-have-api-extra-models": "error",
+  "@darraghor/nestjs-typed/controllers-should-supply-api-tags": "error",
+  "@darraghor/nestjs-typed/forward-ref-injection-should-use-wrapper-type": "error",
+  "@darraghor/nestjs-typed/no-duplicate-decorators": "error",
+  "@darraghor/nestjs-typed/param-decorator-name-matches-route-param": "error",
+  "@darraghor/nestjs-typed/provided-injected-should-match-factory-parameters": "error",
+  "@darraghor/nestjs-typed/sort-module-metadata-arrays": "off",
+  "@darraghor/nestjs-typed/swagger-file-upload-should-be-documented": "error",
+  "@darraghor/nestjs-typed/uploaded-file-should-be-validated": "error",
+  "@darraghor/nestjs-typed/use-correct-endpoint-naming-convention": "off",
+  "@darraghor/nestjs-typed/use-dependency-injection": "off",
+  "@darraghor/nestjs-typed/use-injectable-provided-token": "error",
+  "@darraghor/nestjs-typed/validate-nested-of-array-should-set-each": "error",
+  "@darraghor/nestjs-typed/validated-non-primitive-property-needs-type-decorator": "error",
+  "@darraghor/nestjs-typed/validation-pipe-should-use-forbid-unknown": "error",
+  "@darraghor/nestjs-typed/injectable-should-be-provided": [
+    "error",
+    {
+      src: ["src/**/*.ts"],
+      filterFromPaths: ["node_modules", ".test.", ".spec."],
+    },
+  ],
+} satisfies Linter.RulesRecord;
+
+export const nestjs: Linter.Config[] = [
+  {
+    files: TYPESCRIPT_FILES,
+    name: "friday/nestjs/recommended",
+    plugins: {
+      "@darraghor/nestjs-typed": nestjsPluginForConfig,
+    },
+    rules: nestjsRules,
+  },
+  {
+    files: TYPESCRIPT_FILES,
+    name: "friday/nestjs/compatibility",
+    rules: {
+      "perfectionist/sort-decorators": "off",
+    },
+  },
+  {
+    files: ["**/*.controller.ts"],
+    name: "friday/nestjs/controllers",
+    rules: {
+      "perfectionist/sort-classes": "off",
+    },
+  },
+];

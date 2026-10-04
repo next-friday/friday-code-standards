@@ -1,0 +1,82 @@
+name: Bug report
+description: Report incorrect diagnostics, crashes, compatibility problems, or package usage issues.
+labels: ["bug"]
+assignees:
+  - joetakara
+  - next-friday-engineer
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reproduce the issue with supported versions of the affected package and its required tools.
+        Remove credentials, secrets, personal or customer data, and proprietary source code before submitting.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before you submit
+      description: Confirm these items before submitting the report.
+      options:
+        - label: I searched existing issues and didn't find a matching report.
+          required: true
+        - label: I reproduced this with the latest applicable package version, or current `main` for repository / CI / documentation issues.
+          required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected package
+      options:
+        - "@next-friday/eslint-config-friday"
+        - "@next-friday/prettier-config-friday"
+        - "@next-friday/commitlint-config-friday"
+        - Repository / CI / documentation
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Affected package version
+      description: Provide the package version when the report concerns a published package.
+      placeholder: 0.0.0
+    validations:
+      required: false
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: List Node.js, operating system, package manager, and affected tool versions such as ESLint, TypeScript, Prettier, or Commitlint when relevant.
+      placeholder: |
+        Node.js: 24.20.0
+        ESLint: 10.11.0
+        OS: Ubuntu 24.04 / macOS
+        Package manager: pnpm 12.6.0
+        TypeScript: 6.0.3
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Link to a minimal public reproduction or provide sanitized code and configuration that reproduce the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe the behavior you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Describe what happened, including diagnostics, crashes, or incorrect autofixes.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Sensitive information
+      options:
+        - label: I removed credentials, secrets, personal or customer data, and proprietary code from this report.
+          required: true
