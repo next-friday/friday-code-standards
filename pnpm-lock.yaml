@@ -290,8 +290,8 @@ importers:
         specifier: 8.0.3
         version: 8.0.3(supports-color@7.2.0)
       '@next-friday/eslint-plugin-friday':
-        specifier: 1.0.0
-        version: 1.0.0(eslint@10.11.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+        specifier: 1.0.1
+        version: 1.0.1(eslint@10.11.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       '@next/eslint-plugin-next':
         specifier: 16.3.8
         version: 16.3.8(eslint@10.11.0(jiti@2.7.0)(supports-color@7.2.0))
@@ -982,8 +982,8 @@ packages:
       '@emnapi/core': ^1.7.1 || ^2.0.0-alpha.4
       '@emnapi/runtime': ^1.7.1 || ^2.0.0-alpha.4
 
-  '@next-friday/eslint-plugin-friday@1.0.0':
-    resolution: {integrity: sha512-7N1r1GOZic9RE9YLzRW4Q3j6COefjF4C29PnFfp03aOUzu/plcf0KNZO5D5w3OzJxDe5z40hw5uzxTyaYrDwVw==}
+  '@next-friday/eslint-plugin-friday@1.0.1':
+    resolution: {integrity: sha512-pIwW3ijcHlWXCwM8yvCK8H4X0kH0B1NJ1RCFaP/AftkmrEi3vfvn8xUl9doRkFqH3/Cg+k9MjPhGj1NZ/pVl5A==}
     engines: {node: ^22.13.0 || >=24.0.0}
     peerDependencies:
       eslint: ^10.4.0
@@ -5530,7 +5530,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
-  '@next-friday/eslint-plugin-friday@1.0.0(eslint@10.11.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@next-friday/eslint-plugin-friday@1.0.1(eslint@10.11.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@eslint-react/core': 5.21.0(eslint@10.11.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       eslint: 10.11.0(jiti@2.7.0)(supports-color@7.2.0)

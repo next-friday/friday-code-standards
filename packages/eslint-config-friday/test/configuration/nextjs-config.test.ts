@@ -1,16 +1,12 @@
 import {describe, expect, it} from "vitest";
-import nextPlugin from "@next/eslint-plugin-next";
-import type {Linter} from "eslint";
+import {configs as nextConfigs} from "@next/eslint-plugin-next";
 
 import friday from "../../src/index";
 
-const nextConfigs = Reflect.get(nextPlugin, "configs") as Record<
-  string,
-  {rules?: Linter.RulesRecord}
->;
+const NEXTJS_REACT_CONFIG = "friday/nextjs/react-framework-files";
 
 describe("Next.js config", () => {
-  it("mirrors the bundled official Core Web Vitals rule set behind nextjs: true", () => {
+  it("composes the bundled official recommended and Core Web Vitals rule sets", () => {
     const defaultConfigs = friday();
 
     const enabledConfigs = friday({
@@ -26,7 +22,11 @@ describe("Next.js config", () => {
     expect(defaultNext).toBeUndefined();
     expect(next).toBeDefined();
     expect(next?.plugins).toHaveProperty("@next/next");
-    expect(next?.rules).toEqual(nextConfigs["core-web-vitals"]?.rules);
+
+    expect(next?.rules).toEqual({
+      ...nextConfigs.recommended.rules,
+      ...nextConfigs["core-web-vitals"].rules,
+    });
   });
 
   it("adds a narrow filename compatibility override for Next.js convention files", () => {
@@ -60,6 +60,38 @@ describe("Next.js config", () => {
     );
   });
 
+  it("delegates module structure in Next.js convention files only when React and Next.js are enabled", () => {
+    const nextOnly = friday({
+      nextjs: true,
+    });
+
+    const reactOnly = friday({
+      react: true,
+    });
+
+    const combined = friday({
+      nextjs: true,
+      react: true,
+    });
+
+    expect(nextOnly.find(config => config.name === NEXTJS_REACT_CONFIG)).toBeUndefined();
+    expect(reactOnly.find(config => config.name === NEXTJS_REACT_CONFIG)).toBeUndefined();
+
+    const fridayReactIndex = combined.findIndex(config => config.name === "friday/policy/react");
+    const nextjsReactIndex = combined.findIndex(config => config.name === NEXTJS_REACT_CONFIG);
+    const nextjsReact = combined[nextjsReactIndex];
+
+    expect(nextjsReactIndex).toBeGreaterThan(fridayReactIndex);
+    expect(nextjsReact?.rules?.["friday/component-module"]).toBe("off");
+
+    expect(nextjsReact?.files).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("**/app/**/"),
+        expect.stringContaining("**/pages/**/"),
+      ]),
+    );
+  });
+
   it("keeps React opt-in independent from Next.js like the Antfu surface", () => {
     const names = friday({
       nextjs: true,
@@ -67,5 +99,6 @@ describe("Next.js config", () => {
 
     expect(names).not.toContain("friday/react");
     expect(names).not.toContain("friday/policy/react");
+    expect(names).not.toContain(NEXTJS_REACT_CONFIG);
   });
 });

@@ -1,9 +1,23 @@
 import {assert, describe, expect, it} from "vitest";
 import path from "node:path";
 
+import {eslintForConfigs, packageRoot} from "../helpers";
+import friday from "../../src/index";
+
 import {eslint, projectRoot} from "./behavior.helper";
 
+const COMPONENT_MODULE_RULE = "friday/component-module";
 const COMPONENT_UNKNOWN = "export function Component(): unknown {";
+
+const nextjsReactEslint = eslintForConfigs(
+  friday({
+    nextjs: true,
+    react: true,
+  }),
+);
+
+const genericJsxFixture = path.resolve(packageRoot, "fixtures/projects/untyped/component.jsx");
+const nextjsPageFixture = path.resolve(packageRoot, "fixtures/projects/untyped/app/page.jsx");
 const tsxFixture = path.resolve(projectRoot, "src/component.tsx");
 
 describe("React behavior", () => {
@@ -63,5 +77,29 @@ describe("React behavior", () => {
 
     assert(result);
     expect(result.messages.map(message => message.ruleId)).toContain(rule);
+  });
+
+  it("allows Next.js framework declarations only in Next.js framework files", async () => {
+    const source = [
+      'export const metadata = {title: "Example"};',
+      "export default function Page() { return <main />; }",
+    ].join("\n");
+
+    const [frameworkResult] = await nextjsReactEslint.lintText(source, {
+      filePath: nextjsPageFixture,
+    });
+
+    const [genericResult] = await nextjsReactEslint.lintText(source, {
+      filePath: genericJsxFixture,
+    });
+
+    assert(frameworkResult);
+    assert(genericResult);
+
+    expect(frameworkResult.messages.map(message => message.ruleId)).not.toContain(
+      COMPONENT_MODULE_RULE,
+    );
+
+    expect(genericResult.messages.map(message => message.ruleId)).toContain(COMPONENT_MODULE_RULE);
   });
 });

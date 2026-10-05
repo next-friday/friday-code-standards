@@ -32,7 +32,7 @@ A plugin- or tool-maintained configuration such as `recommended`, `strict`, or `
 
 **Explicit ESLint policy**
 
-Next Friday config modules are the policy authority: enabled rules are named explicitly in Next Friday source rather than inherited from upstream presets.
+Next Friday config modules are the policy authority for capability selection, file scopes, severities, options, and local overrides. A capability may intentionally compose a pinned official framework preset when tracking that preset is the contract; Next Friday-specific deltas remain explicit in source.
 
 **Plugin-first implementation**
 

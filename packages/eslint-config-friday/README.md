@@ -36,7 +36,7 @@ export default friday({
 });
 ```
 
-Consumers do not install or compose `eslint-config-next`, `@next/eslint-plugin-next`, or `@darraghor/eslint-plugin-nestjs-typed` separately. This package bundles the framework plugins and mirrors their selected rule sets explicitly. With `nextjs: true`, Next.js file-convention entries also receive targeted compatibility for filename-based lint rules without weakening ordinary project files.
+Consumers do not install or compose `eslint-config-next`, `@next/eslint-plugin-next`, or `@darraghor/eslint-plugin-nestjs-typed` separately. This package bundles the framework plugins. With `nextjs: true`, it composes the pinned official Next.js recommended and Core Web Vitals presets, then applies only Next Friday compatibility overrides. When React is also enabled, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy.
 
 React and Next.js remain separate explicit capabilities, matching the Antfu-style option surface.
 
