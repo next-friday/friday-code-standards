@@ -1,8 +1,9 @@
 import {assert, describe, expect, it} from "vitest";
 import path from "node:path";
 
-import {eslintForConfigs, packageRoot} from "../helpers";
 import friday from "../../src/index";
+
+import {eslintForConfigs, packageRoot} from "../helpers";
 
 import {eslint, projectRoot} from "./behavior.helper";
 

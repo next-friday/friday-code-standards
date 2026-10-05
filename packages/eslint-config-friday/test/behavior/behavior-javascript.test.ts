@@ -1,7 +1,7 @@
 import {assert, describe, expect, it} from "vitest";
 import path from "node:path";
 
-import {packageRoot} from "../helpers";
+import {eslintForConfigs, fullConfig, packageRoot} from "../helpers";
 
 import {eslint, javascriptFixture, projectRoot} from "./behavior.helper";
 
@@ -10,6 +10,53 @@ const NAME_REPLACEMENTS = "unicorn/name-replacements";
 const REACT_SOURCE = "src/component.tsx";
 const SONARJS_DUPLICATE_STRING = "sonarjs/no-duplicate-string";
 const VALID_SOURCE = "src/valid.ts";
+
+const eslintWithFix = eslintForConfigs(fullConfig, {
+  fix: true,
+});
+
+describe("Import ordering behavior", () => {
+  it("groups relative imports by path depth with type imports last in each layer", async () => {
+    const source = [
+      'import type {SiblingType} from "./sibling-type";',
+      'import {siblingValue} from "./sibling-value";',
+      'import type {ParentTwoType} from "../../parent-two-type";',
+      'import {parentTwoValue} from "../../parent-two-value";',
+      'import {parentFourValue} from "../../../../parent-four-value";',
+      'import type {ParentFourType} from "../../../../parent-four-type";',
+      'import {parentOneValue} from "../parent-one-value";',
+      'import type {ParentOneType} from "../parent-one-type";',
+      'import type {ParentThreeType} from "../../../parent-three-type";',
+      'import {parentThreeValue} from "../../../parent-three-value";',
+      "",
+    ].join("\n");
+
+    const expected = [
+      'import {parentFourValue} from "../../../../parent-four-value";',
+      'import type {ParentFourType} from "../../../../parent-four-type";',
+      "",
+      'import {parentThreeValue} from "../../../parent-three-value";',
+      'import type {ParentThreeType} from "../../../parent-three-type";',
+      "",
+      'import {parentTwoValue} from "../../parent-two-value";',
+      'import type {ParentTwoType} from "../../parent-two-type";',
+      "",
+      'import {parentOneValue} from "../parent-one-value";',
+      'import type {ParentOneType} from "../parent-one-type";',
+      "",
+      'import {siblingValue} from "./sibling-value";',
+      'import type {SiblingType} from "./sibling-type";',
+      "",
+    ].join("\n");
+
+    const [result] = await eslintWithFix.lintText(source, {
+      filePath: path.resolve(projectRoot, VALID_SOURCE),
+    });
+
+    assert(result);
+    expect(result.output).toBe(expected);
+  });
+});
 
 describe("JavaScript policy behavior", () => {
   it.each([

@@ -1,7 +1,8 @@
 import {assert, describe, expect, it} from "vitest";
 
-import {eslintForConfigs} from "../helpers";
 import {perfectionist} from "../../src/configs/perfectionist";
+
+import {eslintForConfigs} from "../helpers";
 
 const FUNCTION_OPEN = "export function sample(input) {";
 const OBJECT_OPEN = "  const {";

@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import {describe, expect, it} from "vitest";
 import path from "node:path";
 
-import {eslintForConfigs, packageRoot} from "../helpers";
 import friday from "../../src/index";
+
+import {eslintForConfigs, packageRoot} from "../helpers";
 
 const RULE_ID = "unicorn/name-replacements";
 const projectRoot = path.resolve(packageRoot, "fixtures/projects/typed");

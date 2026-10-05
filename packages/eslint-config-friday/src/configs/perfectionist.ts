@@ -275,22 +275,89 @@ const perfectionistRules: Linter.RulesRecord = {
           newlinesBetween: 0,
         },
         "type-internal",
-        "value-parent",
+        "value-parent-depth-4-plus",
         {
           newlinesBetween: 0,
         },
-        "type-parent",
-        "value-sibling",
+        "type-parent-depth-4-plus",
+        "value-parent-depth-3",
         {
           newlinesBetween: 0,
         },
-        "type-sibling",
+        "type-parent-depth-3",
+        "value-parent-depth-2",
+        {
+          newlinesBetween: 0,
+        },
+        "type-parent-depth-2",
+        "value-parent-depth-1",
+        {
+          newlinesBetween: 0,
+        },
+        "type-parent-depth-1",
+        "value-sibling-depth-0",
+        {
+          newlinesBetween: 0,
+        },
+        "type-sibling-depth-0",
         "value-index",
         {
           newlinesBetween: 0,
         },
         "type-index",
         "unknown",
+      ],
+      customGroups: [
+        {
+          elementNamePattern: "^(?:[.][.]/){4,}",
+          groupName: "value-parent-depth-4-plus",
+          modifiers: ["value"],
+        },
+        {
+          elementNamePattern: "^(?:[.][.]/){4,}",
+          groupName: "type-parent-depth-4-plus",
+          modifiers: ["type"],
+        },
+        {
+          elementNamePattern: "^(?:[.][.]/){3}(?![.][.]/)",
+          groupName: "value-parent-depth-3",
+          modifiers: ["value"],
+        },
+        {
+          elementNamePattern: "^(?:[.][.]/){3}(?![.][.]/)",
+          groupName: "type-parent-depth-3",
+          modifiers: ["type"],
+        },
+        {
+          elementNamePattern: "^(?:[.][.]/){2}(?![.][.]/)",
+          groupName: "value-parent-depth-2",
+          modifiers: ["value"],
+        },
+        {
+          elementNamePattern: "^(?:[.][.]/){2}(?![.][.]/)",
+          groupName: "type-parent-depth-2",
+          modifiers: ["type"],
+        },
+        {
+          elementNamePattern: "^[.][.]/(?![.][.]/)",
+          groupName: "value-parent-depth-1",
+          modifiers: ["value"],
+        },
+        {
+          elementNamePattern: "^[.][.]/(?![.][.]/)",
+          groupName: "type-parent-depth-1",
+          modifiers: ["type"],
+        },
+        {
+          elementNamePattern: "^[.]/",
+          groupName: "value-sibling-depth-0",
+          modifiers: ["value"],
+        },
+        {
+          elementNamePattern: "^[.]/",
+          groupName: "type-sibling-depth-0",
+          modifiers: ["type"],
+        },
       ],
     },
   ],
