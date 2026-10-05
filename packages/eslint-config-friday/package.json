@@ -1,6 +1,6 @@
 {
   "name": "@next-friday/eslint-config-friday",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Strict, type-aware ESLint Flat Config for JavaScript, TypeScript, React, Next.js, NestJS, and Node.js.",
   "keywords": [
     "eslint-config",
