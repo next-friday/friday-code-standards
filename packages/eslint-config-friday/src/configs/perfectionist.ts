@@ -349,12 +349,12 @@ const perfectionistRules: Linter.RulesRecord = {
           modifiers: ["type"],
         },
         {
-          elementNamePattern: "^[.]/",
+          elementNamePattern: "^[.]/(?!(?:index(?:[.]d)?[.](?:js|ts)|index)?$)",
           groupName: "value-sibling-depth-0",
           modifiers: ["value"],
         },
         {
-          elementNamePattern: "^[.]/",
+          elementNamePattern: "^[.]/(?!(?:index(?:[.]d)?[.](?:js|ts)|index)?$)",
           groupName: "type-sibling-depth-0",
           modifiers: ["type"],
         },
