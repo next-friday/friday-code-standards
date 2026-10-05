@@ -28,10 +28,34 @@ describe("React config ownership", () => {
       plugins: ["react-hooks"],
     },
   ])("keeps $name on its intended plugin", ({config, plugins}) => {
-    expect(config).toHaveLength(1);
+    expect(config.length).toBeGreaterThan(0);
 
-    const [entry] = config;
+    for (const entry of config) {
+      expect(Object.keys(entry.plugins ?? {})).toEqual(plugins);
+    }
+  });
 
-    expect(Object.keys(entry?.plugins ?? {})).toEqual(plugins);
+  it("enables deterministic Friday component contracts in the React context", () => {
+    const reactPolicy = fridayReact.find(config => config.name === "friday/policy/react");
+
+    const entrypointPolicy = fridayReact.find(
+      config => config.name === "friday/policy/react-entrypoint",
+    );
+
+    expect(reactPolicy?.rules?.["friday/component-definition-style"]).toBe("error");
+
+    expect(reactPolicy?.rules?.["friday/props-in-body"]).toEqual([
+      "error",
+      {
+        parameterName: "props",
+        restName: "rest",
+      },
+    ]);
+
+    expect(entrypointPolicy?.rules?.["friday/component-entrypoint"]).toBe("error");
+
+    expect(entrypointPolicy?.files).toEqual(
+      expect.arrayContaining(["**/index.ts", "**/index.tsx", "**/index.mts", "**/index.cts"]),
+    );
   });
 });

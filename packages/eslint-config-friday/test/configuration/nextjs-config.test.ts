@@ -1,12 +1,19 @@
 import {describe, expect, it} from "vitest";
-import {configs as nextConfigs} from "@next/eslint-plugin-next";
+import nextPlugin from "@next/eslint-plugin-next";
+import type {Linter} from "eslint";
 
 import friday from "../../src/index";
 
 const NEXTJS_REACT_CONFIG = "friday/nextjs/react-framework-files";
 
+const nextConfigs = Reflect.get(nextPlugin, "configs") as {
+  "core-web-vitals": {
+    rules: Linter.RulesRecord;
+  };
+};
+
 describe("Next.js config", () => {
-  it("composes the bundled official recommended and Core Web Vitals rule sets", () => {
+  it("composes the bundled official Core Web Vitals rule set", () => {
     const defaultConfigs = friday();
 
     const enabledConfigs = friday({
@@ -22,11 +29,7 @@ describe("Next.js config", () => {
     expect(defaultNext).toBeUndefined();
     expect(next).toBeDefined();
     expect(next?.plugins).toHaveProperty("@next/next");
-
-    expect(next?.rules).toEqual({
-      ...nextConfigs.recommended.rules,
-      ...nextConfigs["core-web-vitals"].rules,
-    });
+    expect(next?.rules).toEqual(nextConfigs["core-web-vitals"].rules);
   });
 
   it("adds a narrow filename compatibility override for Next.js convention files", () => {
@@ -99,6 +102,7 @@ describe("Next.js config", () => {
 
     expect(names).not.toContain("friday/react");
     expect(names).not.toContain("friday/policy/react");
+    expect(names).not.toContain("friday/policy/react-entrypoint");
     expect(names).not.toContain(NEXTJS_REACT_CONFIG);
   });
 });

@@ -36,9 +36,11 @@ export default friday({
 });
 ```
 
-Consumers do not install or compose `eslint-config-next`, `@next/eslint-plugin-next`, or `@darraghor/eslint-plugin-nestjs-typed` separately. This package bundles the framework plugins. With `nextjs: true`, it composes the pinned official Next.js recommended and Core Web Vitals presets, then applies only Next Friday compatibility overrides. When React is also enabled, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy.
+Consumers do not install or compose `eslint-config-next`, `@next/eslint-plugin-next`, or `@darraghor/eslint-plugin-nestjs-typed` separately. This package bundles the framework plugins. With `nextjs: true`, it composes the pinned official Next.js Core Web Vitals preset directly, then applies only Next Friday compatibility overrides. When React is also enabled, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy.
 
 React and Next.js remain separate explicit capabilities, matching the Antfu-style option surface.
+
+With `react: true`, Next Friday also enforces deterministic component contracts: named components use function declarations, component props use the canonical `props` parameter and `rest` rest binding, and TypeScript `index.*` component entrypoints expose the canonical compound API and matching `ComponentProps` namespace.
 
 ## Policy coverage
 

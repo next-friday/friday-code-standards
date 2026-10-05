@@ -1,14 +1,15 @@
-import nextPlugin, {configs as nextConfigs} from "@next/eslint-plugin-next";
+import nextPlugin from "@next/eslint-plugin-next";
 import type {Linter} from "eslint";
 
 import {JAVASCRIPT_AND_TYPESCRIPT_FILES, NEXTJS_FRAMEWORK_FILES} from "../globs";
 
-const nextjsRules = Object.fromEntries(
-  Object.entries({
-    ...nextConfigs.recommended.rules,
-    ...nextConfigs["core-web-vitals"].rules,
-  }).filter(([, rule]) => rule !== undefined),
-) as Linter.RulesRecord;
+const nextConfigs = Reflect.get(nextPlugin, "configs") as {
+  "core-web-vitals": {
+    rules: Linter.RulesRecord;
+  };
+};
+
+const nextjsRules = nextConfigs["core-web-vitals"].rules;
 
 export const nextjs: Linter.Config[] = [
   {

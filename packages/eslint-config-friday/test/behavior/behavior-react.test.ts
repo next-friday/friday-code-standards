@@ -18,7 +18,9 @@ const nextjsReactEslint = eslintForConfigs(
 
 const genericJsxFixture = path.resolve(packageRoot, "fixtures/projects/untyped/component.jsx");
 const nextjsPageFixture = path.resolve(packageRoot, "fixtures/projects/untyped/app/page.jsx");
+const nextjsPagesFixture = path.resolve(packageRoot, "fixtures/projects/untyped/pages/index.jsx");
 const tsxFixture = path.resolve(projectRoot, "src/component.tsx");
+const typescriptIndexFixture = path.resolve(projectRoot, "src/index.ts");
 
 describe("React behavior", () => {
   it.each([
@@ -70,6 +72,32 @@ describe("React behavior", () => {
       rule: "jsx-a11y-x/alt-text",
       source: [COMPONENT_UNKNOWN, "  return <img />;", "}", ""].join("\n"),
     },
+    {
+      name: "requires named components to use function declarations",
+      rule: "friday/component-definition-style",
+      source: [
+        "export const Component = (props: {label: string}) => <div>{props.label}</div>;",
+      ].join("\n"),
+    },
+    {
+      name: "requires the canonical props parameter name",
+      rule: "friday/props-in-body",
+      source: [
+        "export function Component(properties: {label: string}) {",
+        "  return <div>{properties.label}</div>;",
+        "}",
+      ].join("\n"),
+    },
+    {
+      name: "requires the canonical props rest binding name",
+      rule: "friday/props-in-body",
+      source: [
+        "export function Component(props: {id: string; label: string}) {",
+        "  const {label, ...restProps} = props;",
+        "  return <div {...restProps}>{label}</div>;",
+        "}",
+      ].join("\n"),
+    },
   ])("$name", async ({rule, source}) => {
     const [result] = await eslint.lintText(source, {
       filePath: tsxFixture,
@@ -79,24 +107,54 @@ describe("React behavior", () => {
     expect(result.messages.map(message => message.ruleId)).toContain(rule);
   });
 
-  it("allows Next.js framework declarations only in Next.js framework files", async () => {
+  it("enforces the canonical TypeScript component entrypoint contract", async () => {
     const source = [
+      'import type {ComponentProps} from "react";',
+      'import {ButtonRoot} from "./button";',
+      "export const Button = ButtonRoot;",
+      "export type Button = {",
+      "  Props: ComponentProps<typeof ButtonRoot>;",
+      "  RootProps: ComponentProps<typeof ButtonRoot>;",
+      "};",
+    ].join("\n");
+
+    const [result] = await eslint.lintText(source, {
+      filePath: typescriptIndexFixture,
+    });
+
+    assert(result);
+    expect(result.messages.map(message => message.ruleId)).toContain("friday/component-entrypoint");
+  });
+
+  it("allows Next.js framework declarations only in Next.js framework files", async () => {
+    const appSource = [
       'export const metadata = {title: "Example"};',
       "export default function Page() { return <main />; }",
     ].join("\n");
 
-    const [frameworkResult] = await nextjsReactEslint.lintText(source, {
+    const pagesSource = [
+      "export async function getStaticProps() { return {props: {}}; }",
+      "export default function Page() { return <main />; }",
+    ].join("\n");
+
+    const [appResult] = await nextjsReactEslint.lintText(appSource, {
       filePath: nextjsPageFixture,
     });
 
-    const [genericResult] = await nextjsReactEslint.lintText(source, {
+    const [pagesResult] = await nextjsReactEslint.lintText(pagesSource, {
+      filePath: nextjsPagesFixture,
+    });
+
+    const [genericResult] = await nextjsReactEslint.lintText(appSource, {
       filePath: genericJsxFixture,
     });
 
-    assert(frameworkResult);
+    assert(appResult);
+    assert(pagesResult);
     assert(genericResult);
+    expect(appResult.messages.map(message => message.ruleId)).not.toContain(COMPONENT_MODULE_RULE);
 
-    expect(frameworkResult.messages.map(message => message.ruleId)).not.toContain(
+    expect(pagesResult.messages.map(message => message.ruleId)).not.toContain(
       COMPONENT_MODULE_RULE,
     );
 

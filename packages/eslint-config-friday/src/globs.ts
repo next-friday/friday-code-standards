@@ -9,6 +9,11 @@ export const JAVASCRIPT_AND_TYPESCRIPT_EXTENSIONS = [
 
 export const JAVASCRIPT_FILES = JAVASCRIPT_EXTENSIONS.map(extension => `**/*${extension}`);
 export const TYPESCRIPT_FILES = TYPESCRIPT_EXTENSIONS.map(extension => `**/*${extension}`);
+
+export const TYPESCRIPT_INDEX_FILES = TYPESCRIPT_EXTENSIONS.map(
+  extension => `**/index${extension}`,
+);
+
 export const JAVASCRIPT_AND_TYPESCRIPT_FILES = [...JAVASCRIPT_FILES, ...TYPESCRIPT_FILES];
 export const REACT_FILES = ["**/*.jsx", "**/*.tsx"];
 
