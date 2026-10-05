@@ -2,10 +2,44 @@
 set -eu
 
 remote_name=$1
+remote_url=$2
 zero=$(git hash-object --stdin < /dev/null | tr '0-9a-f' '0')
 has_push=0
 has_heavy=0
 head_oid=$(git rev-parse HEAD)
+
+resolve_compare_branch() {
+  candidate_ref="$remote_name/main"
+
+  if git rev-parse --verify "$candidate_ref^{commit}" > /dev/null 2>&1; then
+    printf '%s\n' "$candidate_ref"
+    return
+  fi
+
+  for candidate_remote in $(git remote); do
+    candidate_url=$(git remote get-url "$candidate_remote")
+    candidate_ref="$candidate_remote/main"
+
+    if [ "$candidate_url" = "$remote_url" ] \
+      && git rev-parse --verify "$candidate_ref^{commit}" > /dev/null 2>&1; then
+      printf '%s\n' "$candidate_ref"
+      return
+    fi
+  done
+
+  if git rev-parse --verify 'origin/main^{commit}' > /dev/null 2>&1; then
+    printf '%s\n' "origin/main"
+    return
+  fi
+
+  if git rev-parse --verify 'main^{commit}' > /dev/null 2>&1; then
+    printf '%s\n' "main"
+    return
+  fi
+
+  printf '%s\n' "pre-push verification could not resolve a local main comparison ref." >&2
+  return 1
+}
 
 if ! command -v gitleaks > /dev/null 2>&1; then
   printf '%s\n' "pre-push verification requires gitleaks." >&2
@@ -74,5 +108,7 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
+compare_branch=$(resolve_compare_branch)
+
 pnpm verify
-node scripts/check-patch-coverage.mjs --compare-branch "$remote_name/main" --fail-under 95 packages/commitlint-config-friday/coverage/lcov.info packages/eslint-config-friday/coverage/lcov.info packages/prettier-config-friday/coverage/lcov.info
+node scripts/check-patch-coverage.mjs --compare-branch "$compare_branch" --fail-under 95 packages/commitlint-config-friday/coverage/lcov.info packages/eslint-config-friday/coverage/lcov.info packages/prettier-config-friday/coverage/lcov.info
