@@ -1,6 +1,6 @@
 {
   "name": "@next-friday/commitlint-config-friday",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Deterministic Commitlint configuration for Next Friday projects.",
   "keywords": [
     "commitlint",
