@@ -33,7 +33,7 @@ export default friday({
 });
 ```
 
-`nextjs: true` adds the bundled official Next.js Core Web Vitals policy. `nestjs: true` adds the bundled NestJS typed recommended policy. React remains a separate explicit capability.
+`nextjs: true` composes the bundled official Next.js Core Web Vitals policy. When `react: true` and `nextjs: true` are enabled together, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy. `nestjs: true` adds the bundled NestJS typed recommended policy. React remains a separate explicit capability.
 
 ### Prettier
 

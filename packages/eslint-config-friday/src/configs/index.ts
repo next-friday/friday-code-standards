@@ -9,7 +9,7 @@ export {json} from "./json";
 export {jsxA11y} from "./jsx-a11y";
 export {markdown} from "./markdown";
 export {nestjs} from "./nestjs";
-export {nextjs} from "./nextjs";
+export {nextjs, nextjsReact} from "./nextjs";
 export {node} from "./node";
 export {packageJson} from "./package-json";
 export {perfectionist} from "./perfectionist";

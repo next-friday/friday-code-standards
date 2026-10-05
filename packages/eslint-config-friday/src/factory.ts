@@ -14,6 +14,7 @@ import {
   markdown,
   nestjs,
   nextjs,
+  nextjsReact,
   node,
   packageJson,
   perfectionist,
@@ -53,6 +54,7 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
 
   const nestjsConfigs = isNestjsEnabled ? nestjs : [];
   const nextjsConfigs = isNextjsEnabled ? nextjs : [];
+  const nextjsReactConfigs = isNextjsEnabled && isReactEnabled ? nextjsReact : [];
   const reactStylisticConfigs = isReactEnabled ? reactStylistic : [];
 
   return [
@@ -74,6 +76,7 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
     ...nestjsConfigs,
     ...reactConfigs,
     ...nextjsConfigs,
+    ...nextjsReactConfigs,
     ...vitest,
     ...json,
     ...markdown,

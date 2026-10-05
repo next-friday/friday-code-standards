@@ -36,12 +36,14 @@ describe("public API", () => {
     expect(defaultNames).not.toContain("friday/nestjs/recommended");
     expect(defaultNames).not.toContain("friday/react");
     expect(defaultNames).not.toContain("friday/policy/react");
+    expect(defaultNames).not.toContain("friday/policy/react-entrypoint");
     expect(defaultNames).not.toContain("friday/jsx-a11y");
     expect(defaultNames).not.toContain("friday/react-hooks");
     expect(defaultNames).not.toContain("friday/nextjs/core-web-vitals");
     expect(nestjsNames).toContain("friday/nestjs/recommended");
     expect(reactNames).toContain("friday/react");
     expect(reactNames).toContain("friday/policy/react");
+    expect(reactNames).toContain("friday/policy/react-entrypoint");
     expect(reactNames).toContain("friday/jsx-a11y");
     expect(reactNames).toContain("friday/react-hooks");
     expect(nextjsNames).toContain("friday/nextjs/core-web-vitals");
