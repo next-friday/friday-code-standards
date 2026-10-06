@@ -52,6 +52,32 @@ const naturalAscendingRule: Linter.RuleEntry = [
   },
 ];
 
+const classOrderRule: Linter.RuleEntry = [
+  "error",
+  {
+    order: "asc",
+    type: "natural",
+    groups: [
+      ["static-property", "static-accessor-property", "static-function-property"],
+      "static-block",
+      "static-method",
+      [
+        "private-property",
+        "private-accessor-property",
+        "protected-property",
+        "protected-accessor-property",
+        "private-function-property",
+        "protected-function-property",
+      ],
+      ["property", "accessor-property", "function-property"],
+      "constructor",
+      ["private-method", "protected-method"],
+      "method",
+      "unknown",
+    ],
+  },
+];
+
 const objectOrderRule: Linter.RuleEntry = [
   "error",
   {
@@ -237,7 +263,7 @@ const objectOrderRule: Linter.RuleEntry = [
 
 const perfectionistRules: Linter.RulesRecord = {
   "perfectionist/sort-array-includes": naturalAscendingRule,
-  "perfectionist/sort-classes": naturalAscendingRule,
+  "perfectionist/sort-classes": classOrderRule,
   "perfectionist/sort-decorators": naturalAscendingRule,
   "perfectionist/sort-enums": naturalAscendingRule,
   "perfectionist/sort-export-attributes": naturalAscendingRule,
@@ -248,7 +274,6 @@ const perfectionistRules: Linter.RulesRecord = {
   "perfectionist/sort-intersection-types": naturalAscendingRule,
   "perfectionist/sort-jsx-props": naturalAscendingRule,
   "perfectionist/sort-maps": naturalAscendingRule,
-  "perfectionist/sort-modules": naturalAscendingRule,
   "perfectionist/sort-named-exports": naturalAscendingRule,
   "perfectionist/sort-named-imports": naturalAscendingRule,
   "perfectionist/sort-object-types": naturalAscendingRule,
@@ -257,6 +282,14 @@ const perfectionistRules: Linter.RulesRecord = {
   "perfectionist/sort-switch-case": naturalAscendingRule,
   "perfectionist/sort-union-types": naturalAscendingRule,
   "perfectionist/sort-variable-declarations": naturalAscendingRule,
+  "perfectionist/sort-modules": [
+    "error",
+    {
+      order: "asc",
+      type: "unsorted",
+      useExperimentalDependencyDetection: true,
+    },
+  ],
   "perfectionist/sort-imports": [
     "error",
     {

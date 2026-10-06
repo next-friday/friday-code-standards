@@ -43,7 +43,7 @@ const typescriptRules: Linter.RulesRecord = {
     "error",
     {
       classes: true,
-      functions: true,
+      functions: false,
       variables: true,
     },
   ],
