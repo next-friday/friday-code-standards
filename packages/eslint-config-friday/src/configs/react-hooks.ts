@@ -1,7 +1,7 @@
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import type {ESLint, Linter} from "eslint";
 
-import {REACT_FILES} from "../globs";
+import {JAVASCRIPT_AND_TYPESCRIPT_FILES} from "../globs";
 
 const reactHooksPluginForConfig: ESLint.Plugin = {
   meta: reactHooksPlugin.meta,
@@ -29,7 +29,7 @@ const reactHooksRules: Linter.RulesRecord = {
 
 export const reactHooks: Linter.Config[] = [
   {
-    files: REACT_FILES,
+    files: JAVASCRIPT_AND_TYPESCRIPT_FILES,
     name: "friday/react-hooks",
     plugins: {
       "react-hooks": reactHooksPluginForConfig,

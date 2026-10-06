@@ -20,6 +20,7 @@ const nextjsReactEslint = eslintForConfigs(
 const genericJsxFixture = path.resolve(packageRoot, "fixtures/projects/untyped/component.jsx");
 const nextjsPageFixture = path.resolve(packageRoot, "fixtures/projects/untyped/app/page.jsx");
 const nextjsPagesFixture = path.resolve(packageRoot, "fixtures/projects/untyped/pages/index.jsx");
+const tsFixture = path.resolve(projectRoot, "src/valid.ts");
 const tsxFixture = path.resolve(projectRoot, "src/component.tsx");
 const typescriptIndexFixture = path.resolve(projectRoot, "src/index.ts");
 
@@ -106,6 +107,40 @@ describe("React behavior", () => {
 
     assert(result);
     expect(result.messages.map(message => message.ruleId)).toContain(rule);
+  });
+
+  it.each([
+    {
+      name: "default React value imports",
+      source: ['import React from "react";', "export const state = React.useState;"].join("\n"),
+    },
+    {
+      name: "React namespace value imports",
+      source: ['import * as React from "react";', "export const memo = React.useMemo;"].join("\n"),
+    },
+  ])("rejects $name", async ({source}) => {
+    const [result] = await eslint.lintText(source, {
+      filePath: tsFixture,
+    });
+
+    assert(result);
+    expect(result.messages.map(message => message.ruleId)).toContain("no-restricted-imports");
+  });
+
+  it("allows named React value and type imports", async () => {
+    const source = [
+      'import {useMemo, useState} from "react";',
+      'import type {ReactNode} from "react";',
+      "export const hooks = {useMemo, useState};",
+      "export type Node = ReactNode;",
+    ].join("\n");
+
+    const [result] = await eslint.lintText(source, {
+      filePath: tsFixture,
+    });
+
+    assert(result);
+    expect(result.messages.map(message => message.ruleId)).not.toContain("no-restricted-imports");
   });
 
   it("enforces the canonical TypeScript component entrypoint contract", async () => {

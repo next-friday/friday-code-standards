@@ -12,51 +12,54 @@ const tsFixture = path.resolve(projectRoot, "src/valid.ts");
 const tsxFixture = path.resolve(projectRoot, "src/component.tsx");
 
 describe("React name replacements", () => {
-  it("rejects props in TypeScript even when React mode is enabled", async () => {
-    const eslint = eslintForConfigs(
-      friday({
-        react: true,
-      }),
-    );
-
-    const [result] = await eslint.lintText("export const props = {};\n", {
+  it.each([
+    {
       filePath: tsFixture,
-    });
-
-    expect(result?.messages.map(message => message.ruleId)).toContain(RULE_ID);
-  });
-
-  it("allows React vocabulary in TSX", async () => {
+      name: "TypeScript",
+      source: "export type IconProps = {value: string};\n",
+    },
+    {
+      filePath: tsxFixture,
+      name: "TSX",
+      source:
+        "export function Component(props: {value: string}) { return <div>{props.value}</div>; }\n",
+    },
+  ])("allows React vocabulary in $name", async ({filePath, source}) => {
     const eslint = eslintForConfigs(
       friday({
         react: true,
       }),
     );
 
-    const [result] = await eslint.lintText(
-      "export function Component(props: {value: string}) { return <div>{props.value}</div>; }\n",
-      {
-        filePath: tsxFixture,
-      },
-    );
+    const [result] = await eslint.lintText(source, {
+      filePath,
+    });
 
     assert.ok(result);
     expect(result.messages.map(message => message.ruleId)).not.toContain(RULE_ID);
   });
 
-  it("keeps non-React replacements enabled in TSX", async () => {
+  it.each([
+    {
+      filePath: tsFixture,
+      name: "TypeScript",
+      source: "export const btn = 1;\n",
+    },
+    {
+      filePath: tsxFixture,
+      name: "TSX",
+      source: "export function Component() { const btn = 1; return <div>{btn}</div>; }\n",
+    },
+  ])("keeps non-React replacements enabled in $name", async ({filePath, source}) => {
     const eslint = eslintForConfigs(
       friday({
         react: true,
       }),
     );
 
-    const [result] = await eslint.lintText(
-      "export function Component() { const btn = 1; return <div>{btn}</div>; }\n",
-      {
-        filePath: tsxFixture,
-      },
-    );
+    const [result] = await eslint.lintText(source, {
+      filePath,
+    });
 
     expect(result?.messages.map(message => message.ruleId)).toContain(RULE_ID);
   });

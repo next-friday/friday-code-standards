@@ -1,5 +1,13 @@
+export type FridayCapability =
+  | boolean
+  | {
+      files: string[];
+    };
+
 export type FridayOptions = {
-  nestjs?: boolean;
-  nextjs?: boolean;
-  react?: boolean;
+  browser?: FridayCapability;
+  nestjs?: FridayCapability;
+  nextjs?: FridayCapability;
+  node?: FridayCapability;
+  react?: FridayCapability;
 };

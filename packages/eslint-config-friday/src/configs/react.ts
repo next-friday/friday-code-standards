@@ -1,7 +1,23 @@
 import eslintReact from "@eslint-react/eslint-plugin";
 import type {Linter} from "eslint";
 
-import {REACT_FILES} from "../globs";
+import {JAVASCRIPT_AND_TYPESCRIPT_FILES} from "../globs";
+
+const reactImportRules: Linter.RulesRecord = {
+  "no-restricted-imports": [
+    "error",
+    {
+      paths: [
+        {
+          message: "Use named imports from react instead.",
+          name: "react",
+          allowTypeImports: true,
+          importNames: ["default"],
+        },
+      ],
+    },
+  ],
+};
 
 const reactRules: Linter.RulesRecord = {
   "@eslint-react/dom-no-dangerously-set-innerhtml": "error",
@@ -104,7 +120,12 @@ const reactRules: Linter.RulesRecord = {
 
 export const react: Linter.Config[] = [
   {
-    files: REACT_FILES,
+    files: JAVASCRIPT_AND_TYPESCRIPT_FILES,
+    name: "friday/react-imports",
+    rules: reactImportRules,
+  },
+  {
+    files: JAVASCRIPT_AND_TYPESCRIPT_FILES,
     name: "friday/react",
     plugins: {
       "@eslint-react": eslintReact,
