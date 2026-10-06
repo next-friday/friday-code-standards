@@ -2,6 +2,7 @@ import {assert, describe, expect, it} from "vitest";
 import path from "node:path";
 
 import {base, friday, vitest} from "../../src/configs";
+
 import {eslintForConfigs, packageRoot} from "../helpers";
 
 const eslint = eslintForConfigs([...base, ...friday, ...vitest]);

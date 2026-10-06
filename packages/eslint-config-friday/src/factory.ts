@@ -33,29 +33,32 @@ import {
   vitest,
   yaml,
 } from "./configs";
+import {resolveCapability, scopeConfigs} from "./scope-configs";
 import type {FridayOptions} from "./factory.type";
 
 /**
  * Compose the public Next Friday ESLint Flat Config.
  * Config capabilities stay independent; this factory owns their evaluation order.
- * @param options Framework-context switches.
+ * @param options Framework and runtime contexts, optionally scoped by file globs.
  * @returns The composed ESLint Flat Config array.
  */
 export function createFridayConfig(options: FridayOptions = {}): Linter.Config[] {
-  const {
-    nestjs: isNestjsEnabled = false,
-    nextjs: isNextjsEnabled = false,
-    react: isReactEnabled = false,
-  } = options;
+  const reactConfigs = scopeConfigs(
+    [...unicornReact, ...react, ...fridayReact, ...jsxA11y, ...reactHooks],
+    options.react,
+  );
 
-  const reactConfigs = isReactEnabled
-    ? [...unicornReact, ...react, ...fridayReact, ...jsxA11y, ...reactHooks]
-    : [];
+  const nestjsConfigs = scopeConfigs(nestjs, options.nestjs);
+  const nextjsConfigs = scopeConfigs(nextjs, options.nextjs);
 
-  const nestjsConfigs = isNestjsEnabled ? nestjs : [];
-  const nextjsConfigs = isNextjsEnabled ? nextjs : [];
-  const nextjsReactConfigs = isNextjsEnabled && isReactEnabled ? nextjsReact : [];
-  const reactStylisticConfigs = isReactEnabled ? reactStylistic : [];
+  const nextjsReactConfigs =
+    resolveCapability(options.nextjs) && resolveCapability(options.react)
+      ? scopeConfigs(scopeConfigs(nextjsReact, options.nextjs), options.react)
+      : [];
+
+  const reactStylisticConfigs = scopeConfigs(reactStylistic, options.react);
+  const browserConfigs = scopeConfigs(browser, options.browser, true);
+  const nodeConfigs = scopeConfigs(node, options.node, true);
 
   return [
     ...antfu,
@@ -71,8 +74,8 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
     ...jsdoc,
     ...unicorn,
     ...perfectionist,
-    ...browser,
-    ...node,
+    ...browserConfigs,
+    ...nodeConfigs,
     ...nestjsConfigs,
     ...reactConfigs,
     ...nextjsConfigs,

@@ -40,6 +40,22 @@ Consumers do not install or compose `eslint-config-next`, `@next/eslint-plugin-n
 
 React and Next.js remain separate explicit capabilities, matching the Antfu-style option surface.
 
+### Monorepo scopes
+
+Framework and runtime capabilities can be scoped to workspace paths with `files`. The scope is intersected with each capability's own file patterns, so React, Next.js, NestJS, browser, and Node.js policy do not leak across applications. Boolean options remain supported for single-context projects.
+
+```js
+import friday from "@next-friday/eslint-config-friday";
+
+export default friday({
+  browser: {files: ["apps/web/**"]},
+  node: {files: ["apps/api/**"]},
+  react: {files: ["apps/web/**"]},
+  nextjs: {files: ["apps/web/**"]},
+  nestjs: {files: ["apps/api/**"]},
+});
+```
+
 With `react: true`, Next Friday also enforces deterministic component contracts: named components use function declarations, component props use the canonical `props` parameter and `rest` rest binding, and TypeScript `index.*` component entrypoints expose the canonical compound API and matching `ComponentProps` namespace.
 
 ## Policy coverage

@@ -1,6 +1,7 @@
 import {describe, expect, it} from "vitest";
 
 import {fridayReact} from "../../src/configs/friday";
+import {JAVASCRIPT_AND_TYPESCRIPT_FILES} from "../../src/globs";
 import {jsxA11y} from "../../src/configs/jsx-a11y";
 import {react} from "../../src/configs/react";
 import {reactHooks} from "../../src/configs/react-hooks";
@@ -8,9 +9,9 @@ import {reactHooks} from "../../src/configs/react-hooks";
 describe("React config ownership", () => {
   it.each([
     {
-      config: react,
       name: "React semantics",
       plugins: ["@eslint-react"],
+      config: react.filter(config => config.name !== "friday/react-imports"),
     },
     {
       config: fridayReact,
@@ -33,6 +34,27 @@ describe("React config ownership", () => {
     for (const entry of config) {
       expect(Object.keys(entry.plugins ?? {})).toEqual(plugins);
     }
+  });
+
+  it("applies the React import policy across JavaScript and TypeScript", () => {
+    const importPolicy = react.find(config => config.name === "friday/react-imports");
+
+    expect(importPolicy?.files).toEqual(JAVASCRIPT_AND_TYPESCRIPT_FILES);
+    expect(importPolicy?.plugins).toBeUndefined();
+
+    expect(importPolicy?.rules?.["no-restricted-imports"]).toEqual([
+      "error",
+      {
+        paths: [
+          {
+            message: "Use named imports from react instead.",
+            name: "react",
+            allowTypeImports: true,
+            importNames: ["default"],
+          },
+        ],
+      },
+    ]);
   });
 
   it("enables deterministic Friday component contracts in the React context", () => {
