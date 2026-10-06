@@ -51,7 +51,6 @@ const unicornRules: Linter.RulesRecord = {
   "unicorn/isolated-functions": "error",
   "unicorn/logical-assignment-operators": "error",
   "unicorn/max-nested-calls": "error",
-  "unicorn/name-replacements": "error",
   "unicorn/new-for-builtins": "error",
   "unicorn/no-abusive-eslint-disable": "error",
   "unicorn/no-accessor-recursion": "error",
@@ -331,6 +330,12 @@ const unicornRules: Linter.RulesRecord = {
   "unicorn/switch-case-break-position": "error",
   "unicorn/text-encoding-identifier-case": "error",
   "unicorn/throw-new-error": "error",
+  "unicorn/name-replacements": [
+    "error",
+    {
+      checkFilenames: false,
+    },
+  ],
 };
 
 export const unicorn: Linter.Config[] = [
@@ -354,11 +359,13 @@ export const unicornReact: Linter.Config[] = [
     files: JAVASCRIPT_AND_TYPESCRIPT_FILES,
     name: "friday/unicorn/react",
     rules: {
+      "unicorn/no-null": "off",
       "unicorn/name-replacements": [
         "error",
         {
           allowList: FRAMEWORK_NAME_ALLOW_LIST,
           replacements: REACT_NAME_REPLACEMENTS,
+          checkFilenames: false,
         },
       ],
     },

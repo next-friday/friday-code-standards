@@ -68,7 +68,7 @@ const javascriptRules: Linter.RulesRecord = {
     "error",
     {
       classes: true,
-      functions: true,
+      functions: false,
       variables: true,
     },
   ],
@@ -169,7 +169,6 @@ const baseRules: Linter.RulesRecord = {
   "no-useless-concat": "error",
   "no-useless-escape": "error",
   "no-useless-return": "error",
-  "no-void": "error",
   "prefer-exponentiation-operator": "error",
   "prefer-numeric-literals": "error",
   "prefer-object-spread": "error",
@@ -283,6 +282,12 @@ const baseRules: Linter.RulesRecord = {
       ignoreDestructuring: false,
       ignoreExport: false,
       ignoreImport: false,
+    },
+  ],
+  "no-void": [
+    "error",
+    {
+      allowAsStatement: true,
     },
   ],
   "object-shorthand": [
