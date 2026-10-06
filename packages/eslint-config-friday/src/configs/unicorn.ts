@@ -2,7 +2,7 @@ import globals from "globals";
 import unicornPlugin from "eslint-plugin-unicorn";
 import type {Linter} from "eslint";
 
-import {JAVASCRIPT_AND_TYPESCRIPT_FILES} from "../globs";
+import {JAVASCRIPT_AND_TYPESCRIPT_FILES, REACT_FILES} from "../globs";
 
 const FRAMEWORK_NAME_ALLOW_LIST = {
   generateStaticParams: true,
@@ -359,7 +359,6 @@ export const unicornReact: Linter.Config[] = [
     files: JAVASCRIPT_AND_TYPESCRIPT_FILES,
     name: "friday/unicorn/react",
     rules: {
-      "unicorn/no-null": "off",
       "unicorn/name-replacements": [
         "error",
         {
@@ -368,6 +367,13 @@ export const unicornReact: Linter.Config[] = [
           checkFilenames: false,
         },
       ],
+    },
+  },
+  {
+    files: REACT_FILES,
+    name: "friday/unicorn/react/no-null",
+    rules: {
+      "unicorn/no-null": "off",
     },
   },
 ];

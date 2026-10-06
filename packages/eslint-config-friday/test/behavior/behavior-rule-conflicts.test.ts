@@ -22,27 +22,44 @@ async function lintTypeScript(source: string, filename = "valid.ts") {
 describe("conflicting rule policies", () => {
   it("keeps filename naming separate from identifier replacements", async () => {
     const validRules = await lintTypeScript("export const value = 1;\n", "drawer.utils.ts");
-    const invalidRules = await lintTypeScript("export const foo_bar = 1;\n", "drawer.utils.ts");
 
+    const [invalidFilenameResult] = await eslint.lintFiles(
+      path.resolve(projectRoot, "src/Invalid_File.ts"),
+    );
+
+    assert(invalidFilenameResult);
     expect(validRules).not.toContain("unicorn/name-replacements");
-    expect(invalidRules.length).toBeGreaterThan(0);
+
+    expect(invalidFilenameResult.messages.map(message => message.ruleId)).toContain(
+      "unicorn/filename-case",
+    );
   });
 
-  it("uses null for explicit empty assignments while rejecting explicit undefined assignments", async () => {
-    const nullRules = await lintTypeScript("export let value: string | null = null;\n");
+  it("allows React null contracts without weakening non-React files", async () => {
+    const reactNullRules = await lintTypeScript(
+      "export function Component(): null { return null; }\n",
+      "component.tsx",
+    );
+
+    const nonReactNullRules = await lintTypeScript("export const value: string | null = null;\n");
 
     const undefinedRules = await lintTypeScript(
       "export let value: string | undefined = undefined;\n",
     );
 
-    expect(nullRules).not.toContain("unicorn/no-null");
+    expect(reactNullRules).not.toContain("unicorn/no-null");
+    expect(nonReactNullRules).toContain("unicorn/no-null");
     expect(undefinedRules).toContain("sonarjs/no-undefined-assignment");
   });
 
   it("keeps class grouping and deterministic ordering compatible", async () => {
     const validSource = [
       "export class Queue {",
+      "  static create = (): Queue => new Queue();",
+      "  static { void Queue.create; }",
       "  private queue = 1;",
+      "  private settle = (): void => { this.queue += 1; };",
+      "  public render = (): number => this.queue;",
       "  public get visibleToasts(): number { return this.queue; }",
       "}",
       "",
@@ -65,7 +82,11 @@ describe("conflicting rule policies", () => {
     expect(invalidRules).toContain("perfectionist/sort-classes");
   });
 
-  it("sorts module declarations without breaking dependency order", async () => {
+  it("keeps module declaration order while enforcing dependencies", async () => {
+    const reverseAlphabetical = await lintTypeScript(
+      ["export const zebra = 1;", "export const alpha = 2;", ""].join("\n"),
+    );
+
     const source = [
       "function Code(): number { return TypographyRoot(); }",
       "function Heading(): number { return TypographyRoot(); }",
@@ -76,6 +97,7 @@ describe("conflicting rule policies", () => {
 
     const ruleIds = await lintTypeScript(source);
 
+    expect(reverseAlphabetical).not.toContain("perfectionist/sort-modules");
     expect(ruleIds).not.toContain("perfectionist/sort-modules");
     expect(ruleIds).not.toContain("@typescript-eslint/no-use-before-define");
   });
@@ -96,10 +118,20 @@ describe("conflicting rule policies", () => {
       ].join("\n"),
     );
 
+    const floatingPromise = await lintTypeScript(
+      [
+        "const run = async (): Promise<void> => Promise.resolve();",
+        "run();",
+        "export {run};",
+        "",
+      ].join("\n"),
+    );
+
     const expressionVoid = await lintTypeScript("export const value = void 0;\n");
 
     expect(fireAndForget).not.toContain("no-void");
     expect(fireAndForget).not.toContain("@typescript-eslint/no-floating-promises");
+    expect(floatingPromise).toContain("@typescript-eslint/no-floating-promises");
     expect(expressionVoid).toContain("no-void");
   });
 });
