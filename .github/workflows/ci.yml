@@ -104,6 +104,8 @@ jobs:
         uses: $/.github/actions/setup-pnpm
       - name: Check formatting
         run: pnpm format:check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Check package.json ordering
         run: pnpm sort-package-json:check
 
@@ -455,6 +457,8 @@ jobs:
         run: |
           pnpm format:check
           pnpm sort-package-json:check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Build packages
         run: pnpm build
       - name: Validate peer dependency contracts
