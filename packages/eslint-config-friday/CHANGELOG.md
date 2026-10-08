@@ -1,5 +1,11 @@
 # @next-friday/eslint-config-friday
 
+## 2.0.2
+
+### Patch Changes
+
+- 5c12062: Scope NestJS provider registration checks to production files so test controllers no longer produce inconsistent findings, allow stateless injectable class methods and existing `ConfigurationService` names, preserve SQL `null` in NestJS contracts, and accept PascalCase React components returning Base UI `useRender()` while retaining naming checks outside React files.
+
 ## 2.0.1
 
 ### Patch Changes
