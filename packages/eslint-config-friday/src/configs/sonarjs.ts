@@ -1,7 +1,7 @@
 import sonarjsPlugin from "eslint-plugin-sonarjs";
 import type {Linter} from "eslint";
 
-import {JAVASCRIPT_AND_TYPESCRIPT_FILES} from "../globs";
+import {JAVASCRIPT_AND_TYPESCRIPT_FILES, REACT_FILES} from "../globs";
 
 const sonarjsRules: Linter.RulesRecord = {
   "sonarjs/anchor-precedence": "error",
@@ -304,5 +304,21 @@ export const sonarjs: Linter.Config[] = [
       sonarjs: sonarjsPlugin,
     },
     rules: sonarjsRules,
+  },
+];
+
+export const sonarjsReact: Linter.Config[] = [
+  {
+    files: REACT_FILES,
+    name: "friday/sonarjs/react",
+    rules: {
+      // Base UI's useRender() returns a React element without JSX syntax.
+      "sonarjs/function-name": [
+        "error",
+        {
+          format: "^[_a-zA-Z][a-zA-Z0-9]*$",
+        },
+      ],
+    },
   },
 ];

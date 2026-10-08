@@ -1,7 +1,7 @@
 import {plugin as nestjsPlugin} from "@darraghor/eslint-plugin-nestjs-typed";
 import type {ESLint, Linter} from "eslint";
 
-import {TYPESCRIPT_FILES} from "../globs";
+import {TYPESCRIPT_FILES, TYPESCRIPT_TEST_FILES} from "../globs";
 
 const nestjsPluginForConfig: ESLint.Plugin = {
   meta: nestjsPlugin.meta,
@@ -37,7 +37,12 @@ const nestjsRules = {
     "error",
     {
       src: ["src/**/*.ts"],
-      filterFromPaths: ["node_modules", ".test.", ".spec."],
+      filterFromPaths: [
+        "node_modules",
+        ".test.",
+        ".spec.",
+        String.raw`[/\\](?:test|tests|__tests__)[/\\]`,
+      ],
     },
   ],
 } satisfies Linter.RulesRecord;
@@ -55,7 +60,28 @@ export const nestjs: Linter.Config[] = [
     files: TYPESCRIPT_FILES,
     name: "friday/nestjs/compatibility",
     rules: {
+      // Nest providers are DI-managed instance classes, including stateless services.
+      "class-methods-use-this": "off",
       "perfectionist/sort-decorators": "off",
+      // SQL NULL is part of database and API contracts, not undefined.
+      "unicorn/no-null": "off",
+      "unicorn/name-replacements": [
+        "error",
+        {
+          checkFilenames: false,
+          allowList: {
+            ConfigurationService: true,
+          },
+        },
+      ],
+    },
+  },
+  {
+    files: [...TYPESCRIPT_TEST_FILES, "**/{test,tests,__tests__}/**/*.{ts,tsx,mts,cts}"],
+    name: "friday/nestjs/test-compatibility",
+    rules: {
+      // The upstream provider map is cached and can depend on file traversal order.
+      "@darraghor/nestjs-typed/injectable-should-be-provided": "off",
     },
   },
   {
