@@ -25,6 +25,40 @@ const tsxFixture = path.resolve(projectRoot, "src/component.tsx");
 const typescriptIndexFixture = path.resolve(projectRoot, "src/index.ts");
 
 describe("React behavior", () => {
+  it("accepts PascalCase useRender components without weakening non-React naming", async () => {
+    const source = [
+      'declare function useRender(options: {defaultTagName: string}): unknown;',
+      'export function BoxRoot() { return useRender({defaultTagName: "div"}); }',
+    ].join("\n");
+
+    const [reactResult] = await eslint.lintText(source, {filePath: tsxFixture});
+    const [nonReactResult] = await eslintForConfigs(friday()).lintText(source, {
+      filePath: tsxFixture,
+    });
+    const [nonJsxResult] = await eslint.lintText(source, {filePath: tsFixture});
+    const [invalidNameResult] = await eslint.lintText(
+      "export function bad_name(): number { return 1; }",
+      {filePath: tsxFixture},
+    );
+
+    assert(reactResult);
+    assert(nonReactResult);
+    assert(nonJsxResult);
+    assert(invalidNameResult);
+    expect(reactResult.messages.map(message => message.ruleId)).not.toContain(
+      "sonarjs/function-name",
+    );
+    expect(nonReactResult.messages.map(message => message.ruleId)).toContain(
+      "sonarjs/function-name",
+    );
+    expect(nonJsxResult.messages.map(message => message.ruleId)).toContain(
+      "sonarjs/function-name",
+    );
+    expect(invalidNameResult.messages.map(message => message.ruleId)).toContain(
+      "sonarjs/function-name",
+    );
+  });
+
   it.each([
     {
       name: "enforces the Rules of Hooks",

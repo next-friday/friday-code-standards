@@ -1,7 +1,7 @@
 import eslintReact from "@eslint-react/eslint-plugin";
 import type {Linter} from "eslint";
 
-import {JAVASCRIPT_AND_TYPESCRIPT_FILES} from "../globs";
+import {JAVASCRIPT_AND_TYPESCRIPT_FILES, REACT_FILES} from "../globs";
 
 const reactImportRules: Linter.RulesRecord = {
   "no-restricted-imports": [
@@ -131,5 +131,16 @@ export const react: Linter.Config[] = [
       "@eslint-react": eslintReact,
     },
     rules: reactRules,
+  },
+  {
+    files: REACT_FILES,
+    name: "friday/react/function-name",
+    rules: {
+      // SonarJS only recognizes direct JSX returns, not useRender() calls.
+      "sonarjs/function-name": [
+        "error",
+        {format: "^[_a-zA-Z][a-zA-Z0-9]*$"},
+      ],
+    },
   },
 ];
