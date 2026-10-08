@@ -5,6 +5,7 @@ import type {Linter} from "eslint";
 import {JAVASCRIPT_AND_TYPESCRIPT_FILES, REACT_FILES} from "../globs";
 
 const FRAMEWORK_NAME_ALLOW_LIST = {
+  ConfigurationService: true,
   generateStaticParams: true,
   Props: true,
   req: true,

@@ -37,7 +37,12 @@ const nestjsRules = {
     "error",
     {
       src: ["src/**/*.ts"],
-      filterFromPaths: ["node_modules", ".test.", ".spec."],
+      filterFromPaths: [
+        "node_modules",
+        ".test.",
+        ".spec.",
+        String.raw`[/\\](?:test|tests|__tests__)[/\\]`,
+      ],
     },
   ],
 } satisfies Linter.RulesRecord;
@@ -58,22 +63,21 @@ export const nestjs: Linter.Config[] = [
       // Nest providers are DI-managed instance classes, including stateless services.
       "class-methods-use-this": "off",
       "perfectionist/sort-decorators": "off",
+      // SQL NULL is part of database and API contracts, not undefined.
+      "unicorn/no-null": "off",
       "unicorn/name-replacements": [
         "error",
         {
-          allowList: {ConfigurationService: true},
           checkFilenames: false,
+          allowList: {
+            ConfigurationService: true,
+          },
         },
       ],
-      // SQL NULL is part of database and API contracts, not undefined.
-      "unicorn/no-null": "off",
     },
   },
   {
-    files: [
-      ...TYPESCRIPT_TEST_FILES,
-      "**/{test,tests,__tests__}/**/*.{ts,tsx,mts,cts}",
-    ],
+    files: [...TYPESCRIPT_TEST_FILES, "**/{test,tests,__tests__}/**/*.{ts,tsx,mts,cts}"],
     name: "friday/nestjs/test-compatibility",
     rules: {
       // The upstream provider map is cached and can depend on file traversal order.

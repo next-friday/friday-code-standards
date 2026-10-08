@@ -24,6 +24,7 @@ import {
   reactStylistic,
   regexp,
   sonarjs,
+  sonarjsReact,
   stylistic,
   toml,
   typeChecked,
@@ -44,7 +45,7 @@ import type {FridayOptions} from "./factory.type";
  */
 export function createFridayConfig(options: FridayOptions = {}): Linter.Config[] {
   const reactConfigs = scopeConfigs(
-    [...unicornReact, ...react, ...fridayReact, ...jsxA11y, ...reactHooks],
+    [...unicornReact, ...react, ...fridayReact, ...jsxA11y, ...reactHooks, ...sonarjsReact],
     options.react,
   );
 

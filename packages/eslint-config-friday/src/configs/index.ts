@@ -17,7 +17,7 @@ export {promise} from "./promise";
 export {react} from "./react";
 export {reactHooks} from "./react-hooks";
 export {regexp} from "./regexp";
-export {sonarjs} from "./sonarjs";
+export {sonarjs, sonarjsReact} from "./sonarjs";
 export {reactStylistic, stylistic} from "./stylistic";
 export {toml} from "./toml";
 export {typeChecked} from "./type-checked";

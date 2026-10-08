@@ -8,6 +8,7 @@ import {eslintForConfigs, packageRoot} from "../helpers";
 import {eslint, projectRoot} from "./behavior.helper";
 
 const COMPONENT_MODULE_RULE = "friday/component-module";
+const FUNCTION_NAME_RULE = "sonarjs/function-name";
 const COMPONENT_UNKNOWN = "export function Component(): unknown {";
 
 const nextjsReactEslint = eslintForConfigs(
@@ -27,36 +28,37 @@ const typescriptIndexFixture = path.resolve(projectRoot, "src/index.ts");
 describe("React behavior", () => {
   it("accepts PascalCase useRender components without weakening non-React naming", async () => {
     const source = [
-      'declare function useRender(options: {defaultTagName: string}): unknown;',
+      "declare function useRender(options: {defaultTagName: string}): unknown;",
       'export function BoxRoot() { return useRender({defaultTagName: "div"}); }',
     ].join("\n");
 
-    const [reactResult] = await eslint.lintText(source, {filePath: tsxFixture});
+    const [reactResult] = await eslint.lintText(source, {
+      filePath: tsxFixture,
+    });
+
     const [nonReactResult] = await eslintForConfigs(friday()).lintText(source, {
       filePath: tsxFixture,
     });
-    const [nonJsxResult] = await eslint.lintText(source, {filePath: tsFixture});
+
+    const [nonJsxResult] = await eslint.lintText(source, {
+      filePath: tsFixture,
+    });
+
     const [invalidNameResult] = await eslint.lintText(
       "export function bad_name(): number { return 1; }",
-      {filePath: tsxFixture},
+      {
+        filePath: tsxFixture,
+      },
     );
 
-    assert(reactResult);
-    assert(nonReactResult);
-    assert(nonJsxResult);
-    assert(invalidNameResult);
-    expect(reactResult.messages.map(message => message.ruleId)).not.toContain(
-      "sonarjs/function-name",
-    );
-    expect(nonReactResult.messages.map(message => message.ruleId)).toContain(
-      "sonarjs/function-name",
-    );
-    expect(nonJsxResult.messages.map(message => message.ruleId)).toContain(
-      "sonarjs/function-name",
-    );
-    expect(invalidNameResult.messages.map(message => message.ruleId)).toContain(
-      "sonarjs/function-name",
-    );
+    assert.ok(reactResult);
+    assert.ok(nonReactResult);
+    assert.ok(nonJsxResult);
+    assert.ok(invalidNameResult);
+    expect(reactResult.messages.map(message => message.ruleId)).not.toContain(FUNCTION_NAME_RULE);
+    expect(nonReactResult.messages.map(message => message.ruleId)).toContain(FUNCTION_NAME_RULE);
+    expect(nonJsxResult.messages.map(message => message.ruleId)).toContain(FUNCTION_NAME_RULE);
+    expect(invalidNameResult.messages.map(message => message.ruleId)).toContain(FUNCTION_NAME_RULE);
   });
 
   it.each([
