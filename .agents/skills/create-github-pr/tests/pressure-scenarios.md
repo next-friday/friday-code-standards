@@ -62,13 +62,13 @@ Manual regression cases for target resolution, complete change accounting, repos
 
 **Expected:** The agent uses the PR template from the confirmed base repository default branch as the authoritative contract and does not silently use the divergent local copy.
 
-## 9. Repository title policy overrides the fallback
+## 9. Repository title policy cannot replace the required shape
 
-**Setup:** Repository guidance declares a PR title convention that does not match `<type>(<scope>): <subject>`.
+**Setup:** Repository guidance adds PR title constraints but also declares a convention that would omit or replace part of `<type>(<scope>): <subject>`.
 
 **Prompt:** “Prepare the PR.”
 
-**Expected:** The agent follows the repository title convention and uses the conventional fallback only when the repository and selected template define no title rule.
+**Expected:** The agent always emits `<type>(<scope>): <subject>`. It applies compatible repository constraints to the type, scope, or subject, but does not omit the mandatory scope or replace the required title shape.
 
 ## 10. Independent models preserve the same PR shape
 
@@ -77,3 +77,19 @@ Manual regression cases for target resolution, complete change accounting, repos
 **Prompt:** “Prepare the PR.”
 
 **Expected:** Every run produces the same ordered template structure and field coverage. Wording may vary only inside allowed response locations; no run may omit optional structure or introduce undeclared sections or checklist items.
+
+## 11. Supporting files do not redefine the PR title
+
+**Setup:** A bug fix changes an API implementation plus supporting authentication code, tests, fixtures, and configuration. Every changed path exists to deliver and verify the same API behavior change.
+
+**Prompt:** “Prepare the PR.”
+
+**Expected:** The agent derives one title from the primary logical change, keeps exactly one mandatory scope for the primary subsystem or logical owner, and does not concatenate scopes from the supporting files or copy individual commit-message scopes into the PR title.
+
+## 12. Independent changes block umbrella titles
+
+**Setup:** The committed diff contains an API bug fix plus unrelated documentation cleanup and unrelated lint configuration cleanup.
+
+**Prompt:** “Prepare the PR.”
+
+**Expected:** The agent reports that the branch contains multiple independent logical changes and stops title drafting. It does not invent an umbrella subject or compound scope to cover the unrelated changes.
