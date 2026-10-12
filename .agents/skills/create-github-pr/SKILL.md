@@ -1,6 +1,6 @@
 ---
 name: create-github-pr
-description: Use when the user asks to draft or create a GitHub pull request for a repository or branch, including preparing a PR or opening one.
+description: Use whenever a GitHub pull request is drafted or created, whether the user asks for it or an agent opens one as a step of its own task, including preparing a PR or opening one.
 license: MIT
 ---
 
@@ -41,15 +41,15 @@ _Completion criterion_: Applicable repository policy is identified; any release 
 1. Resolve the base repository's default branch from GitHub metadata and treat the PR template visible there as the authoritative template contract. Find the template in GitHub-supported locations: the repository root, `docs/`, or `.github/`, including `pull_request_template.md` and `PULL_REQUEST_TEMPLATE/` directories with supported `.md` or `.txt` files. Do not substitute a divergent local template unless the user explicitly targets that unpublished state. Follow an explicit repository instruction. If several templates could apply and no default is declared, ask which one to use; never combine them. See [GitHub PR template guidance](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository).
 2. If a template applies, treat it as an output contract. Preserve every heading, section, prompt, checklist item, fixed literal, HTML comment, and their order. Do not add, remove, rename, reorder, merge, or split template structure. Keep optional sections represented and leave response space empty when the template permits and no verified content exists. Mark checkboxes only when evidence supports them. Never invent `N/A`, placeholder facts, extra sections, or issue links.
 3. If no template applies, use concise sections for Summary, Changes, and Verification.
-4. Determine the title from repository policy and the selected template before applying a fallback convention. Preserve any declared title prefix or title rule. Only when neither defines a convention, format the title as `<type>(<scope>): <subject>`:
+4. Every PR title must use the exact format `<type>(<scope>): <subject>`. Repository guidance and templates may further constrain the allowed type, scope, or subject, but they must not replace or omit this required title shape. Derive the title from the single primary logical change represented by the verified committed diff, not from the changed-file inventory or individual commit messages. Treat tests, fixtures, generated files, configuration, and other supporting edits as implementation footprint when they exist only to support that same logical change. If the committed diff contains independent changes that cannot truthfully share one scope and one subject, report the PR as containing multiple logical changes and stop title drafting instead of inventing an umbrella title or compound scope:
    - Use one lowercase type from `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, or `test`.
-   - Include a non-empty, lowercase scope.
+   - Include exactly one non-empty, lowercase scope. The scope is mandatory and must identify the primary affected subsystem or logical ownership area; do not derive it by concatenating changed paths, supporting files, or commit-message scopes.
    - Write a non-empty subject of at most 50 characters, counting only the text after `: `. Do not end the subject with `!`.
-   - Choose the type, scope, and subject from the verified changes. For example: `feat(auth): add passwordless sign-in`.
+   - Choose the type and subject from the primary logical change. For example: `feat(auth): add passwordless sign-in`.
 5. Summarize only the verified committed diff and why it changed, writing inside the response locations allowed by the template. Link issues only with verified numbers. State checks as requested/not requested, unavailable, or with actual results.
 6. Before presenting or creating the PR, validate the draft against the selected template contract. The ordered structural skeleton must match exactly; any added, missing, renamed, merged, split, or reordered structural element is a blocker and must be corrected before continuing.
 
-_Completion criterion_: Template conformance passes when a template exists; the title follows repository/template policy or the fallback convention; and the body describes the verified committed diff without changing the selected template structure.
+_Completion criterion_: Template conformance passes when a template exists; the committed diff represents one primary logical change that can be named truthfully; the title uses the required `<type>(<scope>): <subject>` shape and satisfies any additional repository/template constraints; and the body describes the verified committed diff without changing the selected template structure.
 
 ## 4. Draft or create
 
