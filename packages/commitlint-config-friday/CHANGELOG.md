@@ -1,5 +1,9 @@
 # @next-friday/commitlint-config-friday
 
+## 2.0.4
+
+No changes in this release.
+
 ## 2.0.3
 
 No changes in this release.
