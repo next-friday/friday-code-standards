@@ -1,5 +1,11 @@
 # @next-friday/eslint-config-friday
 
+## 2.0.4
+
+### Patch Changes
+
+- 03db25c: Keep source order inside each value group of `perfectionist/sort-objects` for generic object literals. The rule still groups properties by value kind (plain, string, number, boolean, array, object, other), but it no longer sorts keys alphabetically inside a group. An intentional scale such as `sm`, `md`, `lg` now stays in its declared order. Destructuring patterns, ESLint rule metadata, and ESLint Flat Config objects keep their existing order.
+
 ## 2.0.3
 
 ### Patch Changes
