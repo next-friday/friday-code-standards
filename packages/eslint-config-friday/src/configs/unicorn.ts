@@ -2,7 +2,7 @@ import globals from "globals";
 import unicornPlugin from "eslint-plugin-unicorn";
 import type {Linter} from "eslint";
 
-import {JAVASCRIPT_AND_TYPESCRIPT_FILES, REACT_FILES} from "../globs";
+import {CONFIG_FILES, JAVASCRIPT_AND_TYPESCRIPT_FILES, REACT_FILES} from "../globs";
 
 const FRAMEWORK_NAME_ALLOW_LIST = {
   ConfigurationService: true,
@@ -352,6 +352,13 @@ export const unicorn: Linter.Config[] = [
       unicorn: unicornPlugin,
     },
     rules: unicornRules,
+  },
+  {
+    files: CONFIG_FILES,
+    name: "friday/unicorn/config-files",
+    rules: {
+      "unicorn/no-top-level-side-effects": "off",
+    },
   },
 ];
 

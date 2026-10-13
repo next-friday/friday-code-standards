@@ -17,6 +17,10 @@ export const TYPESCRIPT_INDEX_FILES = TYPESCRIPT_EXTENSIONS.map(
 export const JAVASCRIPT_AND_TYPESCRIPT_FILES = [...JAVASCRIPT_FILES, ...TYPESCRIPT_FILES];
 export const REACT_FILES = ["**/*.jsx", "**/*.tsx"];
 
+export const CONFIG_FILES = JAVASCRIPT_AND_TYPESCRIPT_EXTENSIONS.map(
+  extension => `**/*.config${extension}`,
+);
+
 export const NEXTJS_FRAMEWORK_FILES = [
   "**/app/**/{page,layout,template,default,loading,error,global-error,global-not-found,not-found,forbidden,unauthorized,route,icon,apple-icon,opengraph-image,twitter-image,sitemap,robots,manifest}.{js,jsx,ts,tsx}",
   "**/app/**/{icon,apple-icon,opengraph-image,twitter-image}{0,1,2,3,4,5,6,7,8,9}.{js,jsx,ts,tsx}",
