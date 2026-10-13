@@ -219,7 +219,7 @@ const objectOrderRule: Linter.RuleEntry = [
   {
     customGroups: genericObjectCustomGroups,
     order: "asc",
-    type: "natural",
+    type: "unsorted",
     newlinesBetween: 0,
     newlinesInside: 0,
     partitionByComputedKey: true,

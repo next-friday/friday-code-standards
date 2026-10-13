@@ -123,7 +123,7 @@ describe("object ordering safety", () => {
       ].join("\n"),
     );
 
-    expect(output.indexOf('name: "not-eslint"')).toBeLessThan(output.indexOf("rules:"));
-    expect(output.indexOf("rules:")).toBeLessThan(output.indexOf("settings:"));
+    expect(output.indexOf('name: "not-eslint"')).toBeLessThan(output.indexOf("settings:"));
+    expect(output.indexOf("settings:")).toBeLessThan(output.indexOf("rules:"));
   });
 });

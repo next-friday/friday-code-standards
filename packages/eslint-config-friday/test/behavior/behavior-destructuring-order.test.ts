@@ -60,7 +60,7 @@ describe("object value order", () => {
     expect(result.output).toBe(expected);
   });
 
-  it("groups returned object values by value kind", async () => {
+  it("groups returned object values by value kind in source order", async () => {
     const source = [
       FUNCTION_OPEN,
       "  return {",
@@ -79,10 +79,10 @@ describe("object value order", () => {
     const expected = [
       FUNCTION_OPEN,
       "  return {",
-      '    foo: "bar",',
       '    side: "right",',
-      "    exampleNumber: 1,",
+      '    foo: "bar",',
       "    xxxx: 5,",
+      "    exampleNumber: 1,",
       "    showCloseButton: false,",
       "    children: input.children,",
       "    className: input.className,",
@@ -99,7 +99,7 @@ describe("object value order", () => {
     expect(result.output).toBe(expected);
   });
 
-  it("normalizes generic object groups without blank lines or group comments", async () => {
+  it("groups generic object values in source order without blank lines", async () => {
     const source = [
       "export const sample = {",
       "  options,",
@@ -122,15 +122,15 @@ describe("object value order", () => {
 
     const expected = [
       "export const sample = {",
-      "  data,",
-      "  mapped: sourceData,",
       "  options,",
-      '  name: "foo",',
+      "  mapped: sourceData,",
+      "  data,",
       '  title: "bar",',
-      "  count: 1,",
+      '  name: "foo",',
       "  limit: 10,",
-      "  enabled: true,",
+      "  count: 1,",
       "  visible: false,",
+      "  enabled: true,",
       '  config: {mode: "strict"},',
       "  handler: () => {},",
       "};",
@@ -295,5 +295,30 @@ describe("ESLint config object order", () => {
 
     assert(result);
     expect(result.output).toBe(expected);
+  });
+});
+
+describe("intentional object order", () => {
+  it("keeps an intentional size scale in source order", async () => {
+    const source = [
+      "export const buttonVariants = {",
+      "  variants: {",
+      "    size: {",
+      '      sm: "h-9",',
+      '      md: "",',
+      '      lg: "h-11",',
+      "    },",
+      "  },",
+      "};",
+      "",
+    ].join("\n");
+
+    const [result] = await eslint.lintText(source, {
+      filePath: "sample.tsx",
+    });
+
+    assert(result);
+    expect(result.messages).toStrictEqual([]);
+    expect(result.output).toBeUndefined();
   });
 });
