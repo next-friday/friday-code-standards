@@ -290,6 +290,32 @@ describe("JavaScript policy behavior", () => {
   });
 });
 
+describe("top-level side effect policy behavior", () => {
+  it.each([
+    {
+      fileName: "tool.config.js",
+      reported: false,
+    },
+    {
+      fileName: "tool.js",
+      reported: true,
+    },
+  ])("reports a default-exported call in $fileName: $reported", async ({fileName, reported}) => {
+    const [result] = await eslint.lintText(
+      'import {defineConfig} from "tool";\nexport default defineConfig({});\n',
+      {
+        filePath: path.resolve(packageRoot, "fixtures", fileName),
+      },
+    );
+
+    assert(result);
+
+    expect(
+      result.messages.some(message => message.ruleId === "unicorn/no-top-level-side-effects"),
+    ).toBe(reported);
+  });
+});
+
 describe("abbreviation policy behavior", () => {
   it.each([
     {
