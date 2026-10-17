@@ -228,7 +228,6 @@ const sonarjsRules: Linter.RulesRecord = {
   "sonarjs/no-vue-mixins": "error",
   "sonarjs/no-weak-cipher": "error",
   "sonarjs/no-weak-keys": "error",
-  "sonarjs/no-wildcard-import": "error",
   "sonarjs/non-existent-operator": "error",
   "sonarjs/non-number-in-arithmetic-expression": "error",
   "sonarjs/null-dereference": "error",
