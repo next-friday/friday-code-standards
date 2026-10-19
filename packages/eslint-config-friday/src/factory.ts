@@ -12,6 +12,7 @@ import {
   json,
   jsxA11y,
   markdown,
+  medusa,
   nestjs,
   nextjs,
   nextjsReact,
@@ -49,6 +50,7 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
     options.react,
   );
 
+  const medusaConfigs = scopeConfigs(medusa, options.medusa);
   const nestjsConfigs = scopeConfigs(nestjs, options.nestjs);
   const nextjsConfigs = scopeConfigs(nextjs, options.nextjs);
 
@@ -77,6 +79,7 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
     ...perfectionist,
     ...browserConfigs,
     ...nodeConfigs,
+    ...medusaConfigs,
     ...nestjsConfigs,
     ...reactConfigs,
     ...nextjsConfigs,

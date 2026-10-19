@@ -28,6 +28,11 @@ export const NEXTJS_FRAMEWORK_FILES = [
   "**/pages/**/*.{js,jsx,ts,tsx}",
 ];
 
+export const MEDUSA_MODULE_DEFINITION_FILES = ["**/src/modules/*/index.ts"];
+export const MEDUSA_LINK_FILES = ["**/src/links/**/*.ts"];
+export const MEDUSA_MIGRATION_FILES = ["**/src/modules/*/migrations/**/*.ts"];
+export const MEDUSA_DATA_MODEL_FILES = ["**/src/modules/*/models/**/*.ts"];
+
 export const TYPESCRIPT_TEST_FILES = TYPESCRIPT_EXTENSIONS.flatMap(extension => [
   `**/*.test${extension}`,
   `**/*.spec${extension}`,

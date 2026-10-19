@@ -8,6 +8,7 @@ export {jsdoc} from "./jsdoc";
 export {json} from "./json";
 export {jsxA11y} from "./jsx-a11y";
 export {markdown} from "./markdown";
+export {medusa} from "./medusa";
 export {nestjs} from "./nestjs";
 export {nextjs, nextjsReact} from "./nextjs";
 export {node} from "./node";

@@ -8,11 +8,11 @@ Encode policy once. Keep repository behavior deterministic without rebuilding th
 
 ## Packages
 
-| Package                                                                      | Purpose                                                                                                                                  |
-| :--------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| [`@next-friday/eslint-config-friday`](packages/eslint-config-friday)         | Strict ESLint Flat Config for JavaScript, TypeScript, React, Next.js, NestJS, Node.js, browser projects, tests, and common data formats. |
-| [`@next-friday/prettier-config-friday`](packages/prettier-config-friday)     | Shared Prettier configuration, including shell formatting.                                                                               |
-| [`@next-friday/commitlint-config-friday`](packages/commitlint-config-friday) | Conventional Commit policy for commit messages.                                                                                          |
+| Package                                                                      | Purpose                                                                                                                                          |
+| :--------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@next-friday/eslint-config-friday`](packages/eslint-config-friday)         | Strict ESLint Flat Config for JavaScript, TypeScript, React, Next.js, NestJS, Medusa, Node.js, browser projects, tests, and common data formats. |
+| [`@next-friday/prettier-config-friday`](packages/prettier-config-friday)     | Shared Prettier configuration, including shell formatting.                                                                                       |
+| [`@next-friday/commitlint-config-friday`](packages/commitlint-config-friday) | Conventional Commit policy for commit messages.                                                                                                  |
 
 ## Usage
 
@@ -33,7 +33,7 @@ export default friday({
 });
 ```
 
-`nextjs: true` composes the bundled official Next.js Core Web Vitals policy. When `react: true` and `nextjs: true` are enabled together, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy. `nestjs: true` adds the bundled NestJS typed recommended policy. React remains a separate explicit capability.
+`nextjs: true` composes the bundled official Next.js Core Web Vitals policy. When `react: true` and `nextjs: true` are enabled together, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy. `nestjs: true` adds the bundled NestJS typed recommended policy. `medusa: true` adds the bundled official Medusa recommended policy and delegates Medusa convention files to the framework. React remains a separate explicit capability.
 
 ### Prettier
 
