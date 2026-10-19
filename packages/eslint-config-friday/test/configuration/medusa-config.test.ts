@@ -8,6 +8,7 @@ import friday from "../../src/index";
 import {eslintForConfigs, packageRoot} from "../helpers";
 
 const MEDUSA_RECOMMENDED_CONFIG = "friday/medusa/recommended";
+const INDEX_EXPORT_RULE = "friday/index-export-only";
 const SIDE_EFFECTS_RULE = "unicorn/no-top-level-side-effects";
 
 /**
@@ -53,10 +54,18 @@ describe("Medusa config", () => {
   it.each([
     {
       file: "src/modules/produce/index.ts",
-      rules: ["friday/index-export-only", SIDE_EFFECTS_RULE],
+      rules: [INDEX_EXPORT_RULE, SIDE_EFFECTS_RULE],
+    },
+    {
+      file: "src/modules/produce/index.js",
+      rules: [INDEX_EXPORT_RULE, SIDE_EFFECTS_RULE],
     },
     {
       file: "src/links/product-produce.ts",
+      rules: [SIDE_EFFECTS_RULE],
+    },
+    {
+      file: "src/links/product-produce.js",
       rules: [SIDE_EFFECTS_RULE],
     },
     {
@@ -92,7 +101,7 @@ describe("Medusa config", () => {
     );
 
     for (const rule of [
-      "friday/index-export-only",
+      INDEX_EXPORT_RULE,
       "unicorn/filename-case",
       "unicorn/no-null",
       SIDE_EFFECTS_RULE,
