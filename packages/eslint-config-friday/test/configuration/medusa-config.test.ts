@@ -69,6 +69,14 @@ describe("Medusa config", () => {
       rules: [SIDE_EFFECTS_RULE],
     },
     {
+      file: "src/api/middlewares.ts",
+      rules: [SIDE_EFFECTS_RULE],
+    },
+    {
+      file: "src/api/middlewares.js",
+      rules: [SIDE_EFFECTS_RULE],
+    },
+    {
       file: "src/modules/produce/migrations/Migration20261019192044.ts",
       rules: ["unicorn/filename-case"],
     },

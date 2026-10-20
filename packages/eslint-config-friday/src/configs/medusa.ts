@@ -4,6 +4,7 @@ import type {Linter} from "eslint";
 import {
   MEDUSA_DATA_MODEL_FILES,
   MEDUSA_LINK_FILES,
+  MEDUSA_MIDDLEWARE_FILES,
   MEDUSA_MIGRATION_FILES,
   MEDUSA_MODULE_DEFINITION_FILES,
 } from "../globs";
@@ -32,6 +33,13 @@ export const medusa: Linter.Config[] = [
     name: "friday/medusa/link-definitions",
     rules: {
       // Medusa loads links only from the default `defineLink(...)` export.
+      "unicorn/no-top-level-side-effects": "off",
+    },
+  },
+  {
+    files: MEDUSA_MIDDLEWARE_FILES,
+    name: "friday/medusa/middleware-definitions",
+    rules: {
       "unicorn/no-top-level-side-effects": "off",
     },
   },
