@@ -39,7 +39,7 @@ export default friday({
 
 Consumers do not install or compose `eslint-config-next`, `@next/eslint-plugin-next`, `@darraghor/eslint-plugin-nestjs-typed`, or `@medusajs/eslint-plugin` separately. This package bundles the framework plugins. With `nextjs: true`, it composes the pinned official Next.js Core Web Vitals preset directly, then applies only Next Friday compatibility overrides. When React is also enabled, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy.
 
-With `medusa: true`, it composes the rule blocks of the pinned official Medusa recommended preset. The preset's global test ignores and parser block are not composed, so tests stay linted. Medusa convention files delegate to the framework: module `index.{js,ts}` definitions (`friday/index-export-only`, `unicorn/no-top-level-side-effects`), `src/links/**` (`unicorn/no-top-level-side-effects`), generated `migrations/**` filenames (`unicorn/filename-case`), and data `models/**` (`unicorn/no-null`).
+With `medusa: true`, it composes the rule blocks of the pinned official Medusa recommended preset. The preset's global test ignores and parser block are not composed, so tests stay linted. Medusa convention files delegate to the framework: module `index.{js,ts}` definitions (`friday/index-export-only`, `unicorn/no-top-level-side-effects`), `src/links/**` and `src/api/middlewares.{js,ts}` (`unicorn/no-top-level-side-effects`), generated `migrations/**` filenames (`unicorn/filename-case`), and data `models/**` (`unicorn/no-null`).
 
 React and Next.js remain separate explicit capabilities, matching the Antfu-style option surface.
 

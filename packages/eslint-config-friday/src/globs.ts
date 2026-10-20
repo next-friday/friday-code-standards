@@ -30,6 +30,7 @@ export const NEXTJS_FRAMEWORK_FILES = [
 
 export const MEDUSA_MODULE_DEFINITION_FILES = ["**/src/modules/*/index.{js,ts}"];
 export const MEDUSA_LINK_FILES = ["**/src/links/**/*.{js,ts}"];
+export const MEDUSA_MIDDLEWARE_FILES = ["**/src/api/middlewares.{js,ts}"];
 export const MEDUSA_MIGRATION_FILES = ["**/src/modules/*/migrations/**/*.{js,ts}"];
 export const MEDUSA_DATA_MODEL_FILES = ["**/src/modules/*/models/**/*.{js,ts}"];
 
