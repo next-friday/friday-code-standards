@@ -7,6 +7,8 @@ import {
   MEDUSA_MIDDLEWARE_FILES,
   MEDUSA_MIGRATION_FILES,
   MEDUSA_MODULE_DEFINITION_FILES,
+  MEDUSA_WORKFLOW_FILES,
+  MEDUSA_WORKFLOW_HOOK_FILES,
 } from "../globs";
 
 // The upstream preset also ships global test ignores and its own TypeScript parser; Friday owns both.
@@ -57,6 +59,17 @@ export const medusa: Linter.Config[] = [
     rules: {
       // SQL NULL is part of database contracts, not undefined.
       "unicorn/no-null": "off",
+    },
+  },
+  {
+    files: MEDUSA_WORKFLOW_FILES,
+    ignores: MEDUSA_WORKFLOW_HOOK_FILES,
+    name: "friday/medusa/workflows",
+    rules: {
+      // Composition functions run synchronously; `when(...).then(...)` registers a branch, not a Promise.
+      "promise/always-return": "off",
+      "promise/catch-or-return": "off",
+      "unicorn/prefer-await": "off",
     },
   },
 ];
