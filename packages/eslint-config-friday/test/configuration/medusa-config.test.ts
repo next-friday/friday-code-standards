@@ -112,7 +112,13 @@ describe("Medusa config", () => {
   it.each([
     {
       file: "src/modules/produce/service.ts",
-      rules: [INDEX_EXPORT_RULE, "unicorn/filename-case", "unicorn/no-null", SIDE_EFFECTS_RULE],
+      rules: [
+        INDEX_EXPORT_RULE,
+        "unicorn/filename-case",
+        "unicorn/no-null",
+        SIDE_EFFECTS_RULE,
+        ...WORKFLOW_RULES,
+      ],
     },
     {
       rules: WORKFLOW_RULES,
