@@ -6,6 +6,7 @@ export type FridayCapability =
 
 export type FridayOptions = {
   browser?: FridayCapability;
+  medusa?: FridayCapability;
   nestjs?: FridayCapability;
   nextjs?: FridayCapability;
   node?: FridayCapability;

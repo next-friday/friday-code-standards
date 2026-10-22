@@ -170,7 +170,6 @@ const stylisticRules: Linter.RulesRecord = {
     {
       allowSamePrecedence: false,
       groups: [
-        ["%", "**"],
         ["%", "+"],
         ["%", "-"],
         ["%", "*"],

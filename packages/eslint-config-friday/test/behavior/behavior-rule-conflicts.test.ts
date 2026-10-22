@@ -35,6 +35,19 @@ describe("conflicting rule policies", () => {
     );
   });
 
+  it("accepts Prettier output for exponent under modulo while still reporting other mixed groups", async () => {
+    const prettierOutputRules = await lintTypeScript(
+      "export const seed = (x: number): number => x % 2 ** 31;\n",
+    );
+
+    const mixedGroupRules = await lintTypeScript(
+      "export const sum = (a: number, b: number, c: number): number => a % b + c;\n",
+    );
+
+    expect(prettierOutputRules).not.toContain("@stylistic/no-mixed-operators");
+    expect(mixedGroupRules).toContain("@stylistic/no-mixed-operators");
+  });
+
   it("allows React null contracts without weakening non-React files", async () => {
     const reactNullRules = await lintTypeScript(
       "export function Component(): null { return null; }\n",
