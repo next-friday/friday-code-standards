@@ -10,6 +10,7 @@ import {eslintForConfigs, packageRoot} from "../helpers";
 const MEDUSA_RECOMMENDED_CONFIG = "friday/medusa/recommended";
 const INDEX_EXPORT_RULE = "friday/index-export-only";
 const SIDE_EFFECTS_RULE = "unicorn/no-top-level-side-effects";
+const WORKFLOW_RULES = ["promise/always-return", "promise/catch-or-return", "unicorn/prefer-await"];
 
 /**
  * Resolve the effective config ESLint applies to a project file.
@@ -84,6 +85,14 @@ describe("Medusa config", () => {
       file: "src/modules/produce/models/produce-product.ts",
       rules: ["unicorn/no-null"],
     },
+    {
+      rules: WORKFLOW_RULES,
+      file: "src/workflows/conditional.ts",
+    },
+    {
+      rules: WORKFLOW_RULES,
+      file: "src/workflows/steps/notify.js",
+    },
   ])("delegates Medusa conventions in $file", async ({file, rules}) => {
     const medusaConfig = await configForFile(
       friday({
@@ -100,20 +109,24 @@ describe("Medusa config", () => {
     }
   });
 
-  it("keeps Friday policy in ordinary Medusa module files", async () => {
+  it.each([
+    {
+      file: "src/modules/produce/service.ts",
+      rules: [INDEX_EXPORT_RULE, "unicorn/filename-case", "unicorn/no-null", SIDE_EFFECTS_RULE],
+    },
+    {
+      rules: WORKFLOW_RULES,
+      file: "src/workflows/hooks/product-created.ts",
+    },
+  ])("keeps Friday policy in ordinary Medusa file $file", async ({file, rules}) => {
     const config = await configForFile(
       friday({
         medusa: true,
       }),
-      "src/modules/produce/service.ts",
+      file,
     );
 
-    for (const rule of [
-      INDEX_EXPORT_RULE,
-      "unicorn/filename-case",
-      "unicorn/no-null",
-      SIDE_EFFECTS_RULE,
-    ]) {
+    for (const rule of rules) {
       expect(config?.rules?.[rule]).toEqual(expect.arrayContaining([2]));
     }
   });

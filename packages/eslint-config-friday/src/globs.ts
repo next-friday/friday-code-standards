@@ -33,6 +33,8 @@ export const MEDUSA_LINK_FILES = ["**/src/links/**/*.{js,ts}"];
 export const MEDUSA_MIDDLEWARE_FILES = ["**/src/api/middlewares.{js,ts}"];
 export const MEDUSA_MIGRATION_FILES = ["**/src/modules/*/migrations/**/*.{js,ts}"];
 export const MEDUSA_DATA_MODEL_FILES = ["**/src/modules/*/models/**/*.{js,ts}"];
+export const MEDUSA_WORKFLOW_FILES = ["**/src/workflows/**/*.{js,ts}"];
+export const MEDUSA_WORKFLOW_HOOK_FILES = ["**/src/workflows/hooks/**/*.{js,ts}"];
 
 export const TYPESCRIPT_TEST_FILES = TYPESCRIPT_EXTENSIONS.flatMap(extension => [
   `**/*.test${extension}`,
