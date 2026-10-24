@@ -31,9 +31,7 @@ export function scopeConfigs(
     return {
       ...config,
       files: configFiles
-        ? enabled.files.flatMap(scope =>
-            configFiles.map(pattern => [scope, ...(Array.isArray(pattern) ? pattern : [pattern])]),
-          )
+        ? enabled.files.flatMap(scope => configFiles.map(pattern => [scope, pattern].flat()))
         : enabled.files,
     };
   });
