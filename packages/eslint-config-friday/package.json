@@ -1,13 +1,11 @@
 {
   "name": "@next-friday/eslint-config-friday",
   "version": "2.1.2",
-  "description": "Strict, type-aware ESLint Flat Config for JavaScript, TypeScript, React, Next.js, NestJS, and Node.js.",
+  "description": "Strict, type-aware ESLint Flat Config for JavaScript, TypeScript, React, and Node.js.",
   "keywords": [
     "eslint-config",
     "flat-config",
     "react",
-    "nextjs",
-    "nestjs",
     "strict",
     "typescript-eslint",
     "stylistic",
@@ -54,17 +52,13 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@darraghor/eslint-plugin-nestjs-typed": "7.5.7",
     "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
     "@eslint-react/eslint-plugin": "5.24.4",
     "@eslint/markdown": "8.0.3",
-    "@medusajs/eslint-plugin": "2.21.2",
     "@next-friday/eslint-plugin-friday": "1.1.2",
-    "@next/eslint-plugin-next": "16.3.8",
     "@stylistic/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "8.71.0",
     "@vitest/eslint-plugin": "1.6.27",
-    "class-validator": "0.15.1",
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-antfu": "3.2.3",
     "eslint-plugin-import-x": "4.17.1",

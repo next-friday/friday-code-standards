@@ -6,7 +6,7 @@ Purpose, audience, and design stance of the Next Friday Code Standards repositor
 
 `friday-code-standards` is a public repository with a private root pnpm workspace containing three packages:
 
-- [`@next-friday/eslint-config-friday`](../../packages/eslint-config-friday/README.md) — ESLint 10 Flat Config standard for JavaScript, TypeScript, React, Next.js, NestJS, Node.js, browser, tests, and supported data/document formats.
+- [`@next-friday/eslint-config-friday`](../../packages/eslint-config-friday/README.md) — ESLint 10 Flat Config standard for JavaScript, TypeScript, React, Node.js, browser, tests, and supported data/document formats.
 - [`@next-friday/prettier-config-friday`](../../packages/prettier-config-friday/README.md) — shared Prettier configuration.
 - [`@next-friday/commitlint-config-friday`](../../packages/commitlint-config-friday/README.md) — Commitlint configuration for Next Friday commit-message policy.
 
@@ -24,7 +24,7 @@ Each package manifest's `exports` map defines the supported consumer boundary an
 ## Who Consumes It
 
 - Application and service repositories that need a shared JavaScript/TypeScript policy.
-- React, Next.js, and NestJS projects that enable the relevant factory context.
+- React projects that enable the React factory context; framework plugins stay consumer-owned.
 - Projects that need shared formatting or commit-message policy.
 - This repository itself, which uses the packages as part of its local and CI toolchain.
 
