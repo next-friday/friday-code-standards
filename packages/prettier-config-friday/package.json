@@ -1,6 +1,6 @@
 {
   "name": "@next-friday/prettier-config-friday",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "Deterministic Prettier configuration for Next Friday projects.",
   "keywords": [
     "formatting",
