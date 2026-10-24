@@ -9,20 +9,12 @@ describe("public API", () => {
     expect(module.default()).toEqual(expect.any(Array));
   });
 
-  it("keeps company policy mandatory and framework contexts explicit", async () => {
+  it("keeps company policy mandatory and React context explicit", async () => {
     const {default: friday} = await import("../../src/index.ts");
     const defaultNames = friday().map(config => config.name);
 
-    const nestjsNames = friday({
-      nestjs: true,
-    }).map(config => config.name);
-
     const reactNames = friday({
       react: true,
-    }).map(config => config.name);
-
-    const nextjsNames = friday({
-      nextjs: true,
     }).map(config => config.name);
 
     expect(defaultNames).toContain("friday/browser/globals");
@@ -33,19 +25,15 @@ describe("public API", () => {
     expect(defaultNames).toContain("friday/package-json");
     expect(defaultNames).toContain("friday/yaml");
     expect(defaultNames).toContain("friday/toml");
-    expect(defaultNames).not.toContain("friday/nestjs/recommended");
     expect(defaultNames).not.toContain("friday/react");
     expect(defaultNames).not.toContain("friday/policy/react");
     expect(defaultNames).not.toContain("friday/policy/react-entrypoint");
     expect(defaultNames).not.toContain("friday/jsx-a11y");
     expect(defaultNames).not.toContain("friday/react-hooks");
-    expect(defaultNames).not.toContain("friday/nextjs/core-web-vitals");
-    expect(nestjsNames).toContain("friday/nestjs/recommended");
     expect(reactNames).toContain("friday/react");
     expect(reactNames).toContain("friday/policy/react");
     expect(reactNames).toContain("friday/policy/react-entrypoint");
     expect(reactNames).toContain("friday/jsx-a11y");
     expect(reactNames).toContain("friday/react-hooks");
-    expect(nextjsNames).toContain("friday/nextjs/core-web-vitals");
   });
 });

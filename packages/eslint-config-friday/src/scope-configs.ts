@@ -3,19 +3,6 @@ import type {Linter} from "eslint";
 import type {FridayCapability} from "./factory.type";
 
 /**
- * Resolve whether a capability is enabled while preserving its scoped configuration.
- * @param capability Explicit capability option.
- * @param isEnabledByDefault Default state when the option is omitted.
- * @returns The explicit capability or its default state.
- */
-export function resolveCapability(
-  capability: FridayCapability | undefined,
-  isEnabledByDefault = false,
-): FridayCapability {
-  return capability ?? isEnabledByDefault;
-}
-
-/**
  * Apply an optional consumer file boundary to a set of flat configs.
  * Existing config file patterns are intersected with the consumer boundary.
  * @param configs Flat configs owned by one capability.
@@ -28,7 +15,7 @@ export function scopeConfigs(
   capability: FridayCapability | undefined,
   isEnabledByDefault = false,
 ): Linter.Config[] {
-  const enabled = resolveCapability(capability, isEnabledByDefault);
+  const enabled = capability ?? isEnabledByDefault;
 
   if (enabled === false) {
     return [];
@@ -44,9 +31,7 @@ export function scopeConfigs(
     return {
       ...config,
       files: configFiles
-        ? enabled.files.flatMap(scope =>
-            configFiles.map(pattern => [scope, ...(Array.isArray(pattern) ? pattern : [pattern])]),
-          )
+        ? enabled.files.flatMap(scope => configFiles.map(pattern => [scope, pattern].flat()))
         : enabled.files,
     };
   });

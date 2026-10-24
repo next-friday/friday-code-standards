@@ -52,7 +52,7 @@ A public repository with a private root pnpm workspace, orchestrated by Turborep
 
 ## ESLint Policy Ownership
 
-Next Friday's [policy surface](../../CONTEXT.md) — capability selection, file scopes, severities, options, and local overrides — is owned by Next Friday config modules. Most policy is written explicitly. A capability may intentionally compose a pinned official framework preset when tracking that preset is its contract; Next.js does this for the official Core Web Vitals preset. Next Friday-specific compatibility overrides remain explicit.
+Next Friday's [policy surface](../../CONTEXT.md) — capability selection, file scopes, severities, options, and local overrides — is owned by Next Friday config modules. Policy is written explicitly. Framework plugins (Next.js, NestJS, Medusa, and others) are outside the package scope; consumers compose them after `friday()` ([ADR 0002](../adr/0002-frameworks-are-consumer-owned.md)).
 
 `eslint-config-prettier/flat` is the one intentional non-Next Friday layer. It disables formatting-conflict rules and adds no diagnostic policy; explicit Next Friday stylistic rules run after it where Next Friday retains non-Prettier policy.
 
@@ -99,13 +99,10 @@ ESLint merges matching Flat Config objects in array order, so later objects can 
 `src/factory.ts` is the only composition root and owns the exact evaluation order; read it for the current sequence. The rules the order encodes:
 
 - React context is active when `react: true`, composing `unicornReact` → `react` → `fridayReact` → `jsx-a11y` → `react-hooks`.
-- Next.js context is active independently with `nextjs: true`. Next Friday bundles `@next/eslint-plugin-next` and composes its pinned official Core Web Vitals preset directly. Framework-convention files receive a narrow compatibility override that disables `sonarjs/file-name-differ-from-class`; ordinary project files keep the rule enabled. When React and Next.js are both enabled, a later Next.js convention-file override disables `friday/component-module` only in framework-owned files, leaving ordinary React modules under the generic Friday policy.
-- NestJS context is active independently with `nestjs: true`. Next Friday bundles `@darraghor/eslint-plugin-nestjs-typed` and mirrors its pinned `flatRecommended` rule set explicitly for TypeScript files.
-- Medusa context is active independently with `medusa: true`. Next Friday bundles `@medusajs/eslint-plugin` and composes the plugin and rule blocks of its pinned official recommended preset; the preset's global test ignores and parser block are not composed. Later convention-file overrides disable `friday/index-export-only` and `unicorn/no-top-level-side-effects` in module `index.{js,ts}` files, `unicorn/no-top-level-side-effects` in `src/links/**`, `unicorn/filename-case` in `migrations/**`, and `unicorn/no-null` in `models/**`.
-- Browser and Node globals are both available by default; Node policy remains enabled. Framework options are independent.
+- Browser and Node globals are both available by default; Node policy remains enabled.
 - `prettier` composes before `stylistic` and React-specific `reactStylistic`, so explicit Next Friday style policy survives the formatting-conflict layer.
 
-The default factory emits the core configuration set; `react: true`, `nextjs: true`, `nestjs: true`, and `medusa: true` append their respective framework capability configs. Re-derive composition when touching factory order.
+The default factory emits the core configuration set; `react: true` appends the React capability configs. Re-derive composition when touching factory order.
 
 ## Public Boundary
 

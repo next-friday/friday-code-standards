@@ -10,12 +10,8 @@ overrides:
   flatted@<=3.4.1: ^3.4.2
   "katex@>=0.11.0 <0.18.2": ^0.18.2
   nanoid@<3.3.18: ^3.3.18
-audit:
-  ignore:
-    # Temporary transitive advisory with no patched release.
-    # Path: @next/eslint-plugin-next > fast-glob > micromatch > braces.
-    # Remove as soon as braces publishes a version that fixes GHSA-vfj7-8cjw-p6xm.
-    - GHSA-vfj7-8cjw-p6xm
+  fast-uri@<3.1.9: ^3.1.9
+  zod@<4.6.6: ^4.6.6
 minimumReleaseAgeExclude:
   - "@next-friday/eslint-plugin-friday@1.1.2"
   - "@eslint-react/ast@5.23.3"
@@ -49,5 +45,4 @@ minimumReleaseAgeExclude:
   - vitest@5.0.3
 peerDependencyRules:
   allowedVersions:
-    "@medusajs/eslint-plugin>eslint": "^10"
     "eslint-plugin-import>eslint": "^10"

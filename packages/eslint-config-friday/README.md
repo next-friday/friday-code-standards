@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/%40next-friday%2Feslint-config-friday.svg)](https://www.npmjs.com/package/@next-friday/eslint-config-friday) [![CI](https://github.com/next-friday/friday-code-standards/actions/workflows/ci.yml/badge.svg)](https://github.com/next-friday/friday-code-standards/actions/workflows/ci.yml) [![Codecov](https://codecov.io/gh/next-friday/friday-code-standards/branch/main/graph/badge.svg)](https://codecov.io/gh/next-friday/friday-code-standards/branch/main) [![License](https://img.shields.io/github/license/next-friday/friday-code-standards.svg)](../../LICENSE)
 
-One strict Flat Config for JavaScript, TypeScript, React, Next.js, NestJS, Medusa, Node.js, tests, and structured data—with framework context explicit instead of inferred.
+One strict Flat Config for JavaScript, TypeScript, React, Node.js, tests, and structured data—with project context explicit instead of inferred.
 
 - Strict and type-aware by default.
 - Project context is opt-in and visible in configuration.
@@ -18,34 +18,23 @@ export default friday();
 
 Browser and Node globals are available by default.
 
-### Framework contexts
+### React context
 
-| Option   | Default | Contract                                                       |
-| :------- | :------ | :------------------------------------------------------------- |
-| `react`  | `false` | Enable Next Friday React, JSX accessibility, and Hooks policy. |
-| `nextjs` | `false` | Enable the bundled official Next.js Core Web Vitals policy.    |
-| `nestjs` | `false` | Enable the bundled NestJS typed recommended policy.            |
-| `medusa` | `false` | Enable the bundled official Medusa recommended policy.         |
+| Option  | Default | Contract                                                       |
+| :------ | :------ | :------------------------------------------------------------- |
+| `react` | `false` | Enable Next Friday React, JSX accessibility, and Hooks policy. |
 
 ```js
 import friday from "@next-friday/eslint-config-friday";
 
 export default friday({
   react: true,
-  nextjs: true,
-  nestjs: true,
 });
 ```
 
-Consumers do not install or compose `eslint-config-next`, `@next/eslint-plugin-next`, `@darraghor/eslint-plugin-nestjs-typed`, or `@medusajs/eslint-plugin` separately. This package bundles the framework plugins. With `nextjs: true`, it composes the pinned official Next.js Core Web Vitals preset directly, then applies only Next Friday compatibility overrides. When React is also enabled, Next.js convention files delegate module-structure semantics to Next.js while ordinary React modules keep the strict `friday/component-module` policy.
-
-With `medusa: true`, it composes the rule blocks of the pinned official Medusa recommended preset. The preset's global test ignores and parser block are not composed, so tests stay linted. Medusa convention files delegate to the framework: module `index.{js,ts}` definitions (`friday/index-export-only`, `unicorn/no-top-level-side-effects`), `src/links/**` and `src/api/middlewares.{js,ts}` (`unicorn/no-top-level-side-effects`), generated `migrations/**` filenames (`unicorn/filename-case`), and data `models/**` (`unicorn/no-null`).
-
-React and Next.js remain separate explicit capabilities, matching the Antfu-style option surface.
-
 ### Monorepo scopes
 
-Framework and runtime capabilities can be scoped to workspace paths with `files`. The scope is intersected with each capability's own file patterns, so React, Next.js, NestJS, Medusa, browser, and Node.js policy do not leak across applications. Boolean options remain supported for single-context projects.
+Runtime and React capabilities can be scoped to workspace paths with `files`. The scope is intersected with each capability's own file patterns, so React, browser, and Node.js policy do not leak across applications. Boolean options remain supported for single-context projects.
 
 ```js
 import friday from "@next-friday/eslint-config-friday";
@@ -54,12 +43,32 @@ export default friday({
   browser: {files: ["apps/web/**"]},
   node: {files: ["apps/api/**"]},
   react: {files: ["apps/web/**"]},
-  nextjs: {files: ["apps/web/**"]},
-  nestjs: {files: ["apps/api/**"]},
 });
 ```
 
 With `react: true`, Next Friday also enforces deterministic component contracts: named components use function declarations, component props use the canonical `props` parameter and `rest` rest binding, and TypeScript `index.*` component entrypoints expose the canonical compound API and matching `ComponentProps` namespace.
+
+### Frameworks
+
+This package covers languages, runtimes, and React. Framework plugins such as Next.js, NestJS, or Medusa are consumer-owned: install the framework's ESLint plugin and append its config after `friday()`, followed by any overrides your framework's file conventions need.
+
+```js
+import nextPlugin from "@next/eslint-plugin-next";
+import {defineConfig} from "eslint/config";
+import friday from "@next-friday/eslint-config-friday";
+
+export default defineConfig(
+  friday({react: true}),
+  {
+    plugins: {"@next/next": nextPlugin},
+    rules: nextPlugin.configs["core-web-vitals"].rules,
+  },
+  {
+    files: ["app/**/{page,layout}.tsx"],
+    rules: {"friday/component-module": "off"},
+  },
+);
+```
 
 ## Policy coverage
 
@@ -77,9 +86,6 @@ With `react: true`, Next Friday also enforces deterministic component contracts:
 | Markdown                                |         ✅         |
 | `package.json`                          |         ✅         |
 | React / JSX accessibility / Hooks       |    with `react`    |
-| Next.js Core Web Vitals                 |   with `nextjs`    |
-| NestJS typed recommended                |   with `nestjs`    |
-| Medusa recommended                      |   with `medusa`    |
 | Browser globals                         |         ✅         |
 
 Targeted `eslint-disable` directives are allowed when narrow and described. Unused suppression directives are reported.

@@ -3,24 +3,12 @@ import path from "node:path";
 
 import friday from "../../src/index";
 
-import {eslintForConfigs, packageRoot} from "../helpers";
+import {eslintForConfigs} from "../helpers";
 
 import {eslint, projectRoot} from "./behavior.helper";
 
-const COMPONENT_MODULE_RULE = "friday/component-module";
 const FUNCTION_NAME_RULE = "sonarjs/function-name";
 const COMPONENT_UNKNOWN = "export function Component(): unknown {";
-
-const nextjsReactEslint = eslintForConfigs(
-  friday({
-    nextjs: true,
-    react: true,
-  }),
-);
-
-const genericJsxFixture = path.resolve(packageRoot, "fixtures/projects/untyped/component.jsx");
-const nextjsPageFixture = path.resolve(packageRoot, "fixtures/projects/untyped/app/page.jsx");
-const nextjsPagesFixture = path.resolve(packageRoot, "fixtures/projects/untyped/pages/index.jsx");
 const tsFixture = path.resolve(projectRoot, "src/valid.ts");
 const tsxFixture = path.resolve(projectRoot, "src/component.tsx");
 const typescriptIndexFixture = path.resolve(projectRoot, "src/index.ts");
@@ -196,40 +184,5 @@ describe("React behavior", () => {
 
     assert(result);
     expect(result.messages.map(message => message.ruleId)).toContain("friday/component-entrypoint");
-  });
-
-  it("allows Next.js framework declarations only in Next.js framework files", async () => {
-    const appSource = [
-      'export const metadata = {title: "Example"};',
-      "export default function Page() { return <main />; }",
-    ].join("\n");
-
-    const pagesSource = [
-      "export async function getStaticProps() { return {props: {}}; }",
-      "export default function Page() { return <main />; }",
-    ].join("\n");
-
-    const [appResult] = await nextjsReactEslint.lintText(appSource, {
-      filePath: nextjsPageFixture,
-    });
-
-    const [pagesResult] = await nextjsReactEslint.lintText(pagesSource, {
-      filePath: nextjsPagesFixture,
-    });
-
-    const [genericResult] = await nextjsReactEslint.lintText(appSource, {
-      filePath: genericJsxFixture,
-    });
-
-    assert(appResult);
-    assert(pagesResult);
-    assert(genericResult);
-    expect(appResult.messages.map(message => message.ruleId)).not.toContain(COMPONENT_MODULE_RULE);
-
-    expect(pagesResult.messages.map(message => message.ruleId)).not.toContain(
-      COMPONENT_MODULE_RULE,
-    );
-
-    expect(genericResult.messages.map(message => message.ruleId)).toContain(COMPONENT_MODULE_RULE);
   });
 });

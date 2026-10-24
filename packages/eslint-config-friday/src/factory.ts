@@ -12,10 +12,6 @@ import {
   json,
   jsxA11y,
   markdown,
-  medusa,
-  nestjs,
-  nextjs,
-  nextjsReact,
   node,
   packageJson,
   perfectionist,
@@ -35,13 +31,13 @@ import {
   vitest,
   yaml,
 } from "./configs";
-import {resolveCapability, scopeConfigs} from "./scope-configs";
+import {scopeConfigs} from "./scope-configs";
 import type {FridayOptions} from "./factory.type";
 
 /**
  * Compose the public Next Friday ESLint Flat Config.
  * Config capabilities stay independent; this factory owns their evaluation order.
- * @param options Framework and runtime contexts, optionally scoped by file globs.
+ * @param options Runtime and React contexts, optionally scoped by file globs.
  * @returns The composed ESLint Flat Config array.
  */
 export function createFridayConfig(options: FridayOptions = {}): Linter.Config[] {
@@ -49,15 +45,6 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
     [...unicornReact, ...react, ...fridayReact, ...jsxA11y, ...reactHooks, ...sonarjsReact],
     options.react,
   );
-
-  const medusaConfigs = scopeConfigs(medusa, options.medusa);
-  const nestjsConfigs = scopeConfigs(nestjs, options.nestjs);
-  const nextjsConfigs = scopeConfigs(nextjs, options.nextjs);
-
-  const nextjsReactConfigs =
-    resolveCapability(options.nextjs) && resolveCapability(options.react)
-      ? scopeConfigs(scopeConfigs(nextjsReact, options.nextjs), options.react)
-      : [];
 
   const reactStylisticConfigs = scopeConfigs(reactStylistic, options.react);
   const browserConfigs = scopeConfigs(browser, options.browser, true);
@@ -79,11 +66,7 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
     ...perfectionist,
     ...browserConfigs,
     ...nodeConfigs,
-    ...medusaConfigs,
-    ...nestjsConfigs,
     ...reactConfigs,
-    ...nextjsConfigs,
-    ...nextjsReactConfigs,
     ...vitest,
     ...json,
     ...markdown,

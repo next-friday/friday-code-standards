@@ -21,21 +21,6 @@ export const CONFIG_FILES = JAVASCRIPT_AND_TYPESCRIPT_EXTENSIONS.map(
   extension => `**/*.config${extension}`,
 );
 
-export const NEXTJS_FRAMEWORK_FILES = [
-  "**/app/**/{page,layout,template,default,loading,error,global-error,global-not-found,not-found,forbidden,unauthorized,route,icon,apple-icon,opengraph-image,twitter-image,sitemap,robots,manifest}.{js,jsx,ts,tsx}",
-  "**/app/**/{icon,apple-icon,opengraph-image,twitter-image}{0,1,2,3,4,5,6,7,8,9}.{js,jsx,ts,tsx}",
-  "**/{middleware,proxy,instrumentation,instrumentation-client,mdx-components}.{js,jsx,ts,tsx}",
-  "**/pages/**/*.{js,jsx,ts,tsx}",
-];
-
-export const MEDUSA_MODULE_DEFINITION_FILES = ["**/src/modules/*/index.{js,ts}"];
-export const MEDUSA_LINK_FILES = ["**/src/links/**/*.{js,ts}"];
-export const MEDUSA_MIDDLEWARE_FILES = ["**/src/api/middlewares.{js,ts}"];
-export const MEDUSA_MIGRATION_FILES = ["**/src/modules/*/migrations/**/*.{js,ts}"];
-export const MEDUSA_DATA_MODEL_FILES = ["**/src/modules/*/models/**/*.{js,ts}"];
-export const MEDUSA_WORKFLOW_FILES = ["**/src/workflows/**/*.{js,ts}"];
-export const MEDUSA_WORKFLOW_HOOK_FILES = ["**/src/workflows/hooks/**/*.{js,ts}"];
-
 export const TYPESCRIPT_TEST_FILES = TYPESCRIPT_EXTENSIONS.flatMap(extension => [
   `**/*.test${extension}`,
   `**/*.spec${extension}`,

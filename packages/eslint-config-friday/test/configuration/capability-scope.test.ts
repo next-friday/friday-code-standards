@@ -20,7 +20,7 @@ function configByName(configs: ReturnType<typeof friday>, name: string) {
   return config;
 }
 
-describe("framework and runtime scopes", () => {
+describe("runtime and React scopes", () => {
   it("intersects React config file types with the consumer boundary", () => {
     const configs = friday({
       react: {
@@ -37,54 +37,6 @@ describe("framework and runtime scopes", () => {
       ...WEB_FILES,
       TYPESCRIPT_FILE,
     ]);
-  });
-
-  it("keeps framework capabilities inside independent monorepo boundaries", () => {
-    const configs = friday({
-      nestjs: {
-        files: API_FILES,
-      },
-      nextjs: {
-        files: WEB_FILES,
-      },
-      react: {
-        files: WEB_FILES,
-      },
-    });
-
-    expect(configByName(configs, "friday/nestjs/recommended")?.files).toContainEqual([
-      ...API_FILES,
-      TYPESCRIPT_FILE,
-    ]);
-
-    expect(configByName(configs, "friday/nextjs/core-web-vitals")?.files).toContainEqual([
-      ...WEB_FILES,
-      TYPESCRIPT_FILE,
-    ]);
-  });
-
-  it("intersects Next.js and React boundaries for shared compatibility rules", () => {
-    const reactFiles = ["apps/**"];
-
-    const configs = friday({
-      nextjs: {
-        files: WEB_FILES,
-      },
-      react: {
-        files: reactFiles,
-      },
-    });
-
-    const files = configByName(configs, "friday/nextjs/react-framework-files")?.files;
-
-    expect(files).toBeDefined();
-    expect(files).not.toHaveLength(0);
-
-    expect(files).toEqual(
-      expect.arrayContaining([expect.arrayContaining([...reactFiles, ...WEB_FILES])]),
-    );
-
-    expect(files?.every(pattern => Array.isArray(pattern) && pattern.length === 3)).toBe(true);
   });
 
   it("allows browser and Node runtimes to be scoped independently", () => {
