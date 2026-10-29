@@ -48,22 +48,22 @@ Allowed types:
 
 `build` · `chore` · `ci` · `docs` · `feat` · `fix` · `perf` · `refactor` · `revert` · `style` · `test`
 
-Commit bodies and footers are not allowed.
+Commit bodies are not allowed. A footer may only contain `Co-Authored-By: Name <email>` trailers.
 
 ## Enforced rules
 
-| Rule                       | Requirement                              |
-| :------------------------- | :--------------------------------------- |
-| `body-empty`               | Commit body must be empty                |
-| `footer-empty`             | Commit footer must be empty              |
-| `scope-case`               | Scope must be lowercase                  |
-| `scope-empty`              | Scope is required                        |
-| `subject-empty`            | Subject is required                      |
-| `subject-exclamation-mark` | `!` breaking-change syntax is prohibited |
-| `subject-max-length`       | Subject is at most 50 characters         |
-| `type-case`                | Type must be lowercase                   |
-| `type-empty`               | Type is required                         |
-| `type-enum`                | Type must be one of the allowed values   |
+| Rule                         | Requirement                                    |
+| :--------------------------- | :--------------------------------------------- |
+| `body-empty`                 | Commit body must be empty                      |
+| `footer-co-authored-by-only` | Footer lines must be `Co-Authored-By` trailers |
+| `scope-case`                 | Scope must be lowercase                        |
+| `scope-empty`                | Scope is required                              |
+| `subject-empty`              | Subject is required                            |
+| `subject-exclamation-mark`   | `!` breaking-change syntax is prohibited       |
+| `subject-max-length`         | Subject is at most 50 characters               |
+| `type-case`                  | Type must be lowercase                         |
+| `type-empty`                 | Type is required                               |
+| `type-enum`                  | Type must be one of the allowed values         |
 
 The extended Conventional Commits preset also rejects disallowed subject capitalization, trailing periods, oversized headers, and leading or trailing header whitespace.
 

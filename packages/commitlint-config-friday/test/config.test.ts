@@ -16,12 +16,23 @@ async function lintWithConfig(commit: string) {
 
   return lint(commit, resolved.rules, {
     parserOpts: parserOptions,
+    plugins: resolved.plugins,
   });
 }
 
 describe("commitlint-config-friday", () => {
   it("passes for a valid conventional commit with scope and short subject", async () => {
     const result = await lintWithConfig("feat(api): add auth endpoint");
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+    expect(result.warnings).toHaveLength(0);
+  });
+
+  it("passes for a commit whose footer has only Co-Authored-By trailers", async () => {
+    const result = await lintWithConfig(
+      "feat(api): add auth endpoint\n\nCo-Authored-By: First Author <first@example.com>\nCo-Authored-By: Second Author <second@example.com>",
+    );
 
     expect(result.valid).toBe(true);
     expect(result.errors).toHaveLength(0);
@@ -81,8 +92,8 @@ describe("commitlint-config-friday", () => {
     },
     {
       commit: "feat(api): add auth endpoint\n\nBREAKING CHANGE: details",
-      description: "fails when commit has a non-empty footer",
-      expectedRule: "footer-empty",
+      description: "fails when the footer has a line other than a Co-Authored-By trailer",
+      expectedRule: "footer-co-authored-by-only",
     },
   ])("$description", async ({commit, expectedRule}) => {
     const result = await lintWithConfig(commit);
