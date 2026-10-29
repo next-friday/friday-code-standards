@@ -41,9 +41,25 @@ describe("commitlint-config-friday", () => {
 
   it.each([
     {
+      commit: "feat(api): add auth endpoint\n\nThe old endpoint returned stale sessions.",
+      description: "passes for a one-line body",
+    },
+    {
+      commit: "wip: save progress\n\nThe tests still fail.",
+      description: "passes for a wip checkpoint without a scope",
+    },
+  ])("$description", async ({commit}) => {
+    const result = await lintWithConfig(commit);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it.each([
+    {
       commit: "feat: add auth endpoint",
       description: "fails when scope is empty",
-      expectedRule: "scope-empty",
+      expectedRule: "scope-empty-except-wip",
     },
     {
       commit: "feat(API): add auth endpoint",
@@ -86,9 +102,9 @@ describe("commitlint-config-friday", () => {
       expectedRule: "subject-full-stop",
     },
     {
-      commit: "feat(api): add auth endpoint\n\nThis is a body",
-      description: "fails when commit has a non-empty body",
-      expectedRule: "body-empty",
+      description: "fails when the body exceeds 100 characters",
+      expectedRule: "body-max-length",
+      commit: `feat(api): add auth endpoint\n\n${"a".repeat(101)}`,
     },
     {
       commit: "feat(api): add auth endpoint\n\nBREAKING CHANGE: details",
