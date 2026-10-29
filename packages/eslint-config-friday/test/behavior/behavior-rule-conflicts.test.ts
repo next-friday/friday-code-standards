@@ -48,6 +48,28 @@ describe("conflicting rule policies", () => {
     expect(mixedGroupRules).toContain("@stylistic/no-mixed-operators");
   });
 
+  it("accepts Prettier inline JSX whitespace around multi-line links", async () => {
+    const inlineLinkRules = await lintTypeScript(
+      [
+        "export function Intro() {",
+        "  return (",
+        "    <p>",
+        '      Head over to{" "}',
+        '      <a className="font-medium" href="https://vercel.com/templates">',
+        "        Templates",
+        '      </a>{" "}',
+        "      center.",
+        "    </p>",
+        "  );",
+        "}",
+        "",
+      ].join("\n"),
+      "component.tsx",
+    );
+
+    expect(inlineLinkRules).not.toContain("friday/jsx-newline-between-elements");
+  });
+
   it("allows React null contracts without weakening non-React files", async () => {
     const reactNullRules = await lintTypeScript(
       "export function Component(): null { return null; }\n",
