@@ -19,6 +19,29 @@ async function lintTypeScript(source: string, filename = "valid.ts") {
   return result.messages.map(message => message.ruleId);
 }
 
+/**
+ * Lint a React paragraph whose multi-line link is followed by the given JSX lines.
+ * @param afterLink JSX source that closes the link and follows it.
+ * @returns Rule identifiers reported by ESLint.
+ */
+async function lintInlineLink(afterLink: string) {
+  const source = [
+    "export function Intro() {",
+    "  return (",
+    "    <p>",
+    '      Head over to{" "}',
+    '      <a className="font-medium" href="https://vercel.com/templates">',
+    "        Templates",
+    afterLink,
+    "    </p>",
+    "  );",
+    "}",
+    "",
+  ].join("\n");
+
+  return lintTypeScript(source, "component.tsx");
+}
+
 describe("conflicting rule policies", () => {
   it("keeps filename naming separate from identifier replacements", async () => {
     const validRules = await lintTypeScript("export const value = 1;\n", "drawer.utils.ts");
@@ -46,6 +69,14 @@ describe("conflicting rule policies", () => {
 
     expect(prettierOutputRules).not.toContain("@stylistic/no-mixed-operators");
     expect(mixedGroupRules).toContain("@stylistic/no-mixed-operators");
+  });
+
+  it("accepts Prettier inline JSX whitespace around multi-line links while still separating sibling elements", async () => {
+    const inlineLinkRules = await lintInlineLink('      </a>{" "}\n      center.');
+    const adjacentElementRules = await lintInlineLink("      </a>\n      <span>center.</span>");
+
+    expect(inlineLinkRules).not.toContain("friday/jsx-newline-between-elements");
+    expect(adjacentElementRules).toContain("friday/jsx-newline-between-elements");
   });
 
   it("allows React null contracts without weakening non-React files", async () => {
