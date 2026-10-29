@@ -5,6 +5,8 @@ import type {LintOptions} from "@commitlint/types";
 
 import config from "../src/index.ts";
 
+const footerRule = "footer-co-authored-by-only";
+
 /**
  * Lint a commit message with the resolved Next Friday commitlint configuration.
  * @param commit Commit message to validate.
@@ -45,8 +47,8 @@ describe("commitlint-config-friday", () => {
       description: "passes for a one-line body",
     },
     {
-      commit: "wip: save progress\n\nThe tests still fail.",
-      description: "passes for a wip checkpoint without a scope",
+      commit: "wip(api): save progress\n\nThe tests still fail.",
+      description: "passes for a wip checkpoint",
     },
   ])("$description", async ({commit}) => {
     const result = await lintWithConfig(commit);
@@ -59,7 +61,7 @@ describe("commitlint-config-friday", () => {
     {
       commit: "feat: add auth endpoint",
       description: "fails when scope is empty",
-      expectedRule: "scope-empty-except-wip",
+      expectedRule: "scope-empty",
     },
     {
       commit: "feat(API): add auth endpoint",
@@ -107,9 +109,20 @@ describe("commitlint-config-friday", () => {
       commit: `feat(api): add auth endpoint\n\n${"a".repeat(101)}`,
     },
     {
+      expectedRule: footerRule,
       commit: "feat(api): add auth endpoint\n\nBREAKING CHANGE: details",
       description: "fails when the footer has a line other than a Co-Authored-By trailer",
-      expectedRule: "footer-co-authored-by-only",
+    },
+    {
+      expectedRule: footerRule,
+      commit:
+        "feat(api): add auth endpoint\n\nCo-Authored-By: First Author <first@example.com>\nReviewed-by: Reviewer <reviewer@example.com>",
+      description: "fails when a Co-Authored-By trailer is followed by another trailer",
+    },
+    {
+      expectedRule: footerRule,
+      commit: "feat(api): add auth endpoint\n\nCo-Authored-By: Alice <not-an-email>",
+      description: "fails when a Co-Authored-By trailer has no email address",
     },
   ])("$description", async ({commit, expectedRule}) => {
     const result = await lintWithConfig(commit);

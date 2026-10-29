@@ -42,7 +42,7 @@ fix(ui): handle empty state
 docs(readme): clarify usage
 ```
 
-Scope is required and lowercase, except on a `wip` checkpoint commit such as `wip: save progress`. Subject is required, limited to 50 characters, may not end in a period, and may not use `!` breaking-change syntax.
+Scope is required and lowercase. Subject is required, limited to 50 characters, may not end in a period, and may not use `!` breaking-change syntax.
 
 Allowed types:
 
@@ -57,7 +57,7 @@ A body is optional and limited to 100 characters, about one line. A footer may o
 | `body-max-length`            | Body is at most 100 characters                 |
 | `footer-co-authored-by-only` | Footer lines must be `Co-Authored-By` trailers |
 | `scope-case`                 | Scope must be lowercase                        |
-| `scope-empty-except-wip`     | Scope is required, except on `wip` commits     |
+| `scope-empty`                | Scope is required                              |
 | `subject-empty`              | Subject is required                            |
 | `subject-exclamation-mark`   | `!` breaking-change syntax is prohibited       |
 | `subject-max-length`         | Subject is at most 50 characters               |
@@ -72,7 +72,7 @@ The extended Conventional Commits preset also rejects disallowed subject capital
 | Surface         | Supported contract |
 | :-------------- | :----------------- |
 | Node.js         | `>=24.15.0`        |
-| @commitlint/cli | `>=19.0.0`         |
+| @commitlint/cli | `>=21.0.0`         |
 | Module format   | ESM                |
 
 ## License

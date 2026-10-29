@@ -1,7 +1,7 @@
 import {RuleConfigSeverity} from "@commitlint/types";
 import type {SyncRule, UserConfig} from "@commitlint/types";
 
-const coAuthoredByTrailer = /^Co-authored-by: .+ <[^<>\s]+>$/i;
+const coAuthoredByTrailer = /^Co-authored-by: \S.* <[^<>\s@]+@[^<>\s@]+>$/i;
 
 /**
  * Accept a footer only when every line is a `Co-Authored-By` trailer.
@@ -14,18 +14,6 @@ const footerCoAuthoredByOnly: SyncRule = ({footer}) => [
   "footer may only contain Co-Authored-By: Name <email> trailers",
 ];
 
-/**
- * Require a scope on every commit except a `wip` checkpoint.
- * @param commit Parsed commit.
- * @param commit.scope Commit scope, or null when the header has none.
- * @param commit.type Commit type, or null when the header has none.
- * @returns The rule outcome and its message.
- */
-const scopeEmptyExceptWip: SyncRule = ({scope, type}) => [
-  type === "wip" || (scope !== null && scope !== ""),
-  "scope may not be empty",
-];
-
 export const commitlintConfig = {
   helpUrl: "https://www.conventionalcommits.org/en/v1.0.0",
   extends: ["@commitlint/config-conventional"],
@@ -33,7 +21,6 @@ export const commitlintConfig = {
     {
       rules: {
         "footer-co-authored-by-only": footerCoAuthoredByOnly,
-        "scope-empty-except-wip": scopeEmptyExceptWip,
       },
     },
   ],
@@ -41,7 +28,7 @@ export const commitlintConfig = {
     "body-max-length": [RuleConfigSeverity.Error, "always", 100],
     "footer-co-authored-by-only": [RuleConfigSeverity.Error, "always"],
     "scope-case": [RuleConfigSeverity.Error, "always", "lower-case"],
-    "scope-empty-except-wip": [RuleConfigSeverity.Error, "never"],
+    "scope-empty": [RuleConfigSeverity.Error, "never"],
     "subject-empty": [RuleConfigSeverity.Error, "never"],
     "subject-exclamation-mark": [RuleConfigSeverity.Error, "never"],
     "subject-max-length": [RuleConfigSeverity.Error, "always", 50],

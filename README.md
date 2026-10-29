@@ -62,7 +62,7 @@ The commit contract is `<type>(<scope>): <subject>`; scope is required and lower
 | ESLint          | `^10.4.0`        |
 | TypeScript      | `>=4.8.4 <6.1.0` |
 | Prettier        | `>=3.6.0 <4.0.0` |
-| @commitlint/cli | `>=19.0.0`       |
+| @commitlint/cli | `>=21.0.0`       |
 
 See each package README for its complete public contract and behavior.
 
