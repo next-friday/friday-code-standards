@@ -46,24 +46,24 @@ Scope is required and lowercase. Subject is required, limited to 50 characters, 
 
 Allowed types:
 
-`build` · `chore` · `ci` · `docs` · `feat` · `fix` · `perf` · `refactor` · `revert` · `style` · `test`
+`build` · `chore` · `ci` · `docs` · `feat` · `fix` · `perf` · `refactor` · `revert` · `style` · `test` · `wip`
 
-Commit bodies and footers are not allowed.
+A body is optional and limited to 100 characters, about one line. A footer may only contain `Co-Authored-By: Name <email>` trailers.
 
 ## Enforced rules
 
-| Rule                       | Requirement                              |
-| :------------------------- | :--------------------------------------- |
-| `body-empty`               | Commit body must be empty                |
-| `footer-empty`             | Commit footer must be empty              |
-| `scope-case`               | Scope must be lowercase                  |
-| `scope-empty`              | Scope is required                        |
-| `subject-empty`            | Subject is required                      |
-| `subject-exclamation-mark` | `!` breaking-change syntax is prohibited |
-| `subject-max-length`       | Subject is at most 50 characters         |
-| `type-case`                | Type must be lowercase                   |
-| `type-empty`               | Type is required                         |
-| `type-enum`                | Type must be one of the allowed values   |
+| Rule                         | Requirement                                    |
+| :--------------------------- | :--------------------------------------------- |
+| `body-max-length`            | Body is at most 100 characters                 |
+| `footer-co-authored-by-only` | Footer lines must be `Co-Authored-By` trailers |
+| `scope-case`                 | Scope must be lowercase                        |
+| `scope-empty`                | Scope is required                              |
+| `subject-empty`              | Subject is required                            |
+| `subject-exclamation-mark`   | `!` breaking-change syntax is prohibited       |
+| `subject-max-length`         | Subject is at most 50 characters               |
+| `type-case`                  | Type must be lowercase                         |
+| `type-empty`                 | Type is required                               |
+| `type-enum`                  | Type must be one of the allowed values         |
 
 The extended Conventional Commits preset also rejects disallowed subject capitalization, trailing periods, oversized headers, and leading or trailing header whitespace.
 
@@ -72,7 +72,7 @@ The extended Conventional Commits preset also rejects disallowed subject capital
 | Surface         | Supported contract |
 | :-------------- | :----------------- |
 | Node.js         | `>=24.15.0`        |
-| @commitlint/cli | `>=19.0.0`         |
+| @commitlint/cli | `>=21.0.0`         |
 | Module format   | ESM                |
 
 ## License

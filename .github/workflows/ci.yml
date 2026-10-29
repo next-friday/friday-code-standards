@@ -354,7 +354,7 @@ jobs:
             version: 3.6.0
           - package: commitlint-config-friday
             peer: commitlint
-            version: 19.0.0
+            version: 21.0.0
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -434,7 +434,7 @@ jobs:
                 "@commitlint/cli@$PEER_VERSION" \
                 ./tarballs/*.tgz
 
-              printf '%s\n' 'chore(test): validate consumer' | \
+              printf '%s\n\n%s\n' 'chore(test): validate consumer' 'Co-Authored-By: Example Author <author@example.com>' | \
                 npx --no-install commitlint \
                   --config node_modules/@next-friday/commitlint-config-friday/dist/index.mjs
               ;;
