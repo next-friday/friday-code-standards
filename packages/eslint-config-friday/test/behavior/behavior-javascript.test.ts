@@ -300,20 +300,20 @@ describe("top-level side effect policy behavior", () => {
       fileName: "tool.js",
       reported: true,
     },
-  ])("reports a default-exported call in $fileName: $reported", async ({fileName, reported}) => {
-    const [result] = await eslint.lintText(
-      'import {defineConfig} from "tool";\nexport default defineConfig({});\n',
-      {
+  ])(
+    "reports a default-exported global mutation in $fileName: $reported",
+    async ({fileName, reported}) => {
+      const [result] = await eslint.lintText("export default Object.assign(globalThis, {});\n", {
         filePath: path.resolve(packageRoot, "fixtures", fileName),
-      },
-    );
+      });
 
-    assert(result);
+      assert(result);
 
-    expect(
-      result.messages.some(message => message.ruleId === "unicorn/no-top-level-side-effects"),
-    ).toBe(reported);
-  });
+      expect(
+        result.messages.some(message => message.ruleId === "unicorn/no-top-level-side-effects"),
+      ).toBe(reported);
+    },
+  );
 });
 
 describe("abbreviation policy behavior", () => {

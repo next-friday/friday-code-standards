@@ -16,18 +16,20 @@ import friday from "@next-friday/eslint-config-friday";
 export default friday();
 ```
 
-Browser and Node globals are available by default.
+Node globals are available by default.
 
-### React context
+### Browser and React context
 
-| Option  | Default | Contract                                                       |
-| :------ | :------ | :------------------------------------------------------------- |
-| `react` | `false` | Enable Next Friday React, JSX accessibility, and Hooks policy. |
+| Option    | Default | Contract                                                       |
+| :-------- | :------ | :------------------------------------------------------------- |
+| `browser` | `false` | Enable browser runtime globals.                                |
+| `react`   | `false` | Enable Next Friday React, JSX accessibility, and Hooks policy. |
 
 ```js
 import friday from "@next-friday/eslint-config-friday";
 
 export default friday({
+  browser: true,
   react: true,
 });
 ```
@@ -86,9 +88,9 @@ export default defineConfig(
 | Markdown                                |         ✅         |
 | `package.json`                          |         ✅         |
 | React / JSX accessibility / Hooks       |    with `react`    |
-| Browser globals                         |         ✅         |
+| Browser globals                         |   with `browser`   |
 
-Targeted `eslint-disable` directives are allowed when narrow and described. Unused suppression directives are reported.
+Targeted `eslint-disable` directives are allowed when narrow and described. Unused suppression directives are reported. Inline configuration comments such as `/* eslint */`, `/* global */`, `/* exported */`, and `/* eslint-env */` are reported, and `@eslint-community/eslint-comments` rules cannot be disabled.
 
 ## Project-specific ignores
 

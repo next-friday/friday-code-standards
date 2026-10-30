@@ -11,6 +11,16 @@ const commentsRules: Linter.RulesRecord = {
   "@eslint-community/eslint-comments/no-unused-disable": "error",
   "@eslint-community/eslint-comments/no-unused-enable": "error",
   "@eslint-community/eslint-comments/require-description": "error",
+  "@eslint-community/eslint-comments/no-restricted-disable": [
+    "error",
+    "@eslint-community/eslint-comments/*",
+  ],
+  "@eslint-community/eslint-comments/no-use": [
+    "error",
+    {
+      allow: ["eslint-disable", "eslint-disable-line", "eslint-disable-next-line", "eslint-enable"],
+    },
+  ],
 };
 
 export const eslintComments: Linter.Config[] = [
