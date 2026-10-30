@@ -57,7 +57,9 @@
     "@eslint/markdown": "8.0.3",
     "@next-friday/eslint-plugin-friday": "1.1.3",
     "@stylistic/eslint-plugin": "5.10.0",
+    "@typescript-eslint/eslint-plugin": "8.72.1",
     "@typescript-eslint/parser": "8.72.1",
+    "@typescript-eslint/utils": "8.72.1",
     "@vitest/eslint-plugin": "1.6.28",
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-antfu": "3.3.1",
@@ -77,6 +79,7 @@
     "eslint-plugin-yml": "3.9.0",
     "globals": "17.13.0",
     "jsonc-eslint-parser": "3.3.0",
+    "typescript": "6.0.3",
     "typescript-eslint": "8.72.1"
   },
   "devDependencies": {
@@ -85,13 +88,11 @@
     "eslint": "10.13.0",
     "rimraf": "6.1.3",
     "tsdown": "0.23.3",
-    "typescript": "6.0.3",
     "vite": "8.3.5",
     "vitest": "5.0.5"
   },
   "peerDependencies": {
-    "eslint": "^10.4.0",
-    "typescript": ">=4.8.4 <6.1.0"
+    "eslint": "^10.4.0"
   },
   "engines": {
     "node": ">=24.15.0"

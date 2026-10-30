@@ -111,14 +111,14 @@ ESLint owns diagnostics, semantic fixes, code quality, and non-conflicting struc
 
 ## Compatibility
 
-| Surface                   | Supported contract |
-| :------------------------ | :----------------- |
-| Node.js                   | `>=24.15.0`        |
-| ESLint                    | `^10.4.0`          |
-| TypeScript                | `>=4.8.4 <6.1.0`   |
-| Module format             | ESM only           |
-| ESLint configuration      | Flat Config        |
-| `eslint.config.ts` loader | `jiti >=2.2.0`     |
+| Surface                   | Supported contract                                                      |
+| :------------------------ | :---------------------------------------------------------------------- |
+| Node.js                   | `>=24.15.0`                                                             |
+| ESLint                    | `^10.4.0`                                                               |
+| TypeScript                | Project `>=6.0.0`, including `7.x`; linting runs on the bundled `6.0.3` |
+| Module format             | ESM only                                                                |
+| ESLint configuration      | Flat Config                                                             |
+| `eslint.config.ts` loader | `jiti >=2.2.0`                                                          |
 
 ## Troubleshooting
 
