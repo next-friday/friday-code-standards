@@ -53,7 +53,6 @@ const unicornRules: Linter.RulesRecord = {
   "unicorn/logical-assignment-operators": "error",
   "unicorn/max-nested-calls": "error",
   "unicorn/new-for-builtins": "error",
-  "unicorn/no-abusive-eslint-disable": "error",
   "unicorn/no-accessor-recursion": "error",
   "unicorn/no-accidental-bitwise-operator": "error",
   "unicorn/no-anonymous-default-export": "error",

@@ -47,7 +47,7 @@ export function createFridayConfig(options: FridayOptions = {}): Linter.Config[]
   );
 
   const reactStylisticConfigs = scopeConfigs(reactStylistic, options.react);
-  const browserConfigs = scopeConfigs(browser, options.browser, true);
+  const browserConfigs = scopeConfigs(browser, options.browser);
   const nodeConfigs = scopeConfigs(node, options.node, true);
 
   return [

@@ -17,7 +17,7 @@ describe("public API", () => {
       react: true,
     }).map(config => config.name);
 
-    expect(defaultNames).toContain("friday/browser/globals");
+    expect(defaultNames).not.toContain("friday/browser/globals");
     expect(defaultNames).toContain("friday/node");
     expect(defaultNames).toContain("friday/vitest");
     expect(defaultNames).toContain("friday/json");
