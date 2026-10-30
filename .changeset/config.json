@@ -3,7 +3,7 @@
   "commit": false,
   "access": "public",
   "baseBranch": "main",
-  "fixed": [
+  "linked": [
     [
       "@next-friday/commitlint-config-friday",
       "@next-friday/eslint-config-friday",

@@ -20,7 +20,7 @@ Check pending `.changeset/*.md` files first. Do not record the same unreleased c
 - Use `minor` for new backward-compatible capabilities.
 - Use `major` for breaking consumer changes, including stricter policy that can make previously accepted code fail.
 
-The packages are a fixed group in `config.json`. They share one version, so the highest required bump applies to all packages.
+The packages are a linked group in `config.json`. Only a package with a changeset gets a new version, and every package released together gets the same version number.
 
 ## Write release notes
 
