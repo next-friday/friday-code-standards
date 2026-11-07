@@ -40,6 +40,11 @@ describe("commitlint-config-friday", () => {
     },
     {
       commit:
+        "feat(api): add auth endpoint\n\nClaude-Session: https://claude.ai/code/session_abc123",
+      description: "passes for a Claude-Session trailer alone",
+    },
+    {
+      commit:
         "feat(api): add auth endpoint\n\nBREAKING CHANGE: details\nClaude-Session: https://claude.ai/code/session_abc123\nCo-Authored-By: First Author <first@example.com>",
       description: "passes for any footer trailers",
     },
