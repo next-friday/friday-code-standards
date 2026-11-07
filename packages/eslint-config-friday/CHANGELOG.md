@@ -1,5 +1,11 @@
 # @next-friday/eslint-config-friday
 
+## 5.2.0
+
+### Patch Changes
+
+- d43796a: Update `eslint-plugin-import-x` to 4.18.0, which supports `minimatch` 11, so the dependency tree can resolve the patched `minimatch` and `glob` releases. New upstream rules stay disabled.
+
 ## 5.1.0
 
 ### Minor Changes
