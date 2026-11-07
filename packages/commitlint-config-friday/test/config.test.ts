@@ -5,8 +5,6 @@ import type {LintOptions} from "@commitlint/types";
 
 import config from "../src/index.ts";
 
-const footerRule = "footer-co-authored-by-only";
-
 /**
  * Lint a commit message with the resolved Next Friday commitlint configuration.
  * @param commit Commit message to validate.
@@ -31,16 +29,6 @@ describe("commitlint-config-friday", () => {
     expect(result.warnings).toHaveLength(0);
   });
 
-  it("passes for a commit whose footer has only Co-Authored-By trailers", async () => {
-    const result = await lintWithConfig(
-      "feat(api): add auth endpoint\n\nCo-Authored-By: First Author <first@example.com>\nCo-Authored-By: Second Author <second@example.com>",
-    );
-
-    expect(result.valid).toBe(true);
-    expect(result.errors).toHaveLength(0);
-    expect(result.warnings).toHaveLength(0);
-  });
-
   it.each([
     {
       commit: "feat(api): add auth endpoint\n\nThe old endpoint returned stale sessions.",
@@ -49,6 +37,16 @@ describe("commitlint-config-friday", () => {
     {
       commit: "wip(api): save progress\n\nThe tests still fail.",
       description: "passes for a wip checkpoint",
+    },
+    {
+      commit:
+        "feat(api): add auth endpoint\n\nClaude-Session: https://claude.ai/code/session_abc123",
+      description: "passes for a Claude-Session trailer alone",
+    },
+    {
+      commit:
+        "feat(api): add auth endpoint\n\nBREAKING CHANGE: details\nClaude-Session: https://claude.ai/code/session_abc123\nCo-Authored-By: First Author <first@example.com>",
+      description: "passes for any footer trailers",
     },
   ])("$description", async ({commit}) => {
     const result = await lintWithConfig(commit);
@@ -102,27 +100,6 @@ describe("commitlint-config-friday", () => {
       commit: "feat(api): add auth endpoint.",
       description: "fails when the conventional preset rejects a trailing period",
       expectedRule: "subject-full-stop",
-    },
-    {
-      description: "fails when the body exceeds 100 characters",
-      expectedRule: "body-max-length",
-      commit: `feat(api): add auth endpoint\n\n${"a".repeat(101)}`,
-    },
-    {
-      expectedRule: footerRule,
-      commit: "feat(api): add auth endpoint\n\nBREAKING CHANGE: details",
-      description: "fails when the footer has a line other than a Co-Authored-By trailer",
-    },
-    {
-      expectedRule: footerRule,
-      commit:
-        "feat(api): add auth endpoint\n\nCo-Authored-By: First Author <first@example.com>\nReviewed-by: Reviewer <reviewer@example.com>",
-      description: "fails when a Co-Authored-By trailer is followed by another trailer",
-    },
-    {
-      expectedRule: footerRule,
-      commit: "feat(api): add auth endpoint\n\nCo-Authored-By: Alice <not-an-email>",
-      description: "fails when a Co-Authored-By trailer has no email address",
     },
   ])("$description", async ({commit, expectedRule}) => {
     const result = await lintWithConfig(commit);
