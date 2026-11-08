@@ -2,8 +2,6 @@
 
 Use a changeset for every publishable package change with external impact. Do not add a changeset for changes that do not affect a package release.
 
-All three publishable packages currently start at `0.0.0`. `.changeset/first-release.md` is the pending shared First Release; do not create a second initial-release changeset.
-
 ## Add a changeset
 
 From the repository root:
