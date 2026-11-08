@@ -1,5 +1,11 @@
 # @next-friday/prettier-config-friday
 
+## 5.2.1
+
+### Patch Changes
+
+- a60a8da: Release at the shared version of the Next Friday packages. `@next-friday/prettier-config-friday` was left at 4.0.0 while the commitlint and ESLint packages released 5.2.0; all three now share one version number. No configuration change.
+
 ## 4.0.0
 
 No changes in this release.
