@@ -1,5 +1,9 @@
 # @next-friday/commitlint-config-friday
 
+## 5.2.1
+
+No changes in this release.
+
 ## 5.2.0
 
 ### Minor Changes
