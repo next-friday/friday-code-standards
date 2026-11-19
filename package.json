@@ -45,7 +45,7 @@
     "@next-friday/prettier-config-friday": "workspace:*",
     "dependency-cruiser": "18.7.0",
     "editorconfig-checker": "7.0.0",
-    "eslint": "10.13.0",
+    "eslint": "10.14.0",
     "husky": "9.1.7",
     "knip": "6.43.0",
     "lint-staged": "17.6.0",
